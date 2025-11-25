@@ -124,6 +124,22 @@ Preferred communication style: Simple, everyday language.
 - New users start with guvenilirlikPuani: 50 (was 100)
 - Score range: 0-100, affects badge display on profile
 
+**Homepage Search Integration (Latest)**
+- Hero section search form redirects to /mac-bul with URL query parameters
+- Parameters: konum (location) and tarih (date)
+- /mac-bul reads URL params and pre-fills search filters
+- Automatic search execution based on URL parameters
+
+**Profile Real Data Display**
+- /api/profil returns actual user data from database
+- Profile page displays fullName, username, phone, position, guvenilirlikPuani
+- Badge display based on reliability score (Güvenilir/Orta/Düşük)
+
+**Match-User Association**
+- POST /api/maclar uses session.userId as organizatorId
+- GET /api/maclarim returns organized and joined matches
+- Proper user ID linkage for match ownership
+
 ### External Dependencies
 
 **Third-Party UI Libraries**
