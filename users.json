@@ -167,5 +167,18 @@
     "weight": null,
     "age": null,
     "guvenilirlikPuani": 50
+  },
+  {
+    "id": "c2057444-5e67-4d5c-974c-fb79da3f62a5",
+    "username": "authtest_cyXtia",
+    "password": "$2b$10$ueRg3yn4gn1pFNKR3uxKlO0TjxLc9P9R4LyND5fO4MszyGvVRreve",
+    "fullName": "Auth Test User cyXtia",
+    "phone": "05551234567",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 50
   }
 ]
