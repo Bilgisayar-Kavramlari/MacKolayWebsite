@@ -35,6 +35,15 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import type { Match } from "@shared/schema";
 
+interface MacVerisi {
+  macId: string;
+  konum: string;
+  tarihSaat: string;
+  gerekliMevkiler: string[];
+  katilanOyuncular: string[];
+  organizatorId: string;
+}
+
 const searchSchema = z.object({
   location: z.string().optional(),
   date: z.string().optional(),
@@ -100,6 +109,24 @@ export default function FindMatch() {
     queryFn: async () => {
       const response = await fetch(buildQueryUrl());
       if (!response.ok) throw new Error('Failed to fetch matches');
+      return response.json();
+    },
+  });
+
+  const buildMaclarQueryUrl = () => {
+    const params = new URLSearchParams();
+    if (filters.location) params.set('konum', filters.location);
+    if (filters.date) params.set('tarih', filters.date);
+    if (filters.position) params.set('mevki', filters.position);
+    const queryString = params.toString();
+    return queryString ? `/api/maclar?${queryString}` : '/api/maclar';
+  };
+
+  const { data: maclar, isLoading: maclarLoading } = useQuery<MacVerisi[]>({
+    queryKey: ['/api/maclar', filters.location, filters.date, filters.position],
+    queryFn: async () => {
+      const response = await fetch(buildMaclarQueryUrl());
+      if (!response.ok) throw new Error('Failed to fetch maclar');
       return response.json();
     },
   });
@@ -261,9 +288,9 @@ export default function FindMatch() {
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Users className="w-5 h-5" />
               Mevcut Maçlar
-              {matches && (
+              {(matches || maclar) && (
                 <Badge variant="secondary" data-testid="badge-match-count">
-                  {matches.length} maç
+                  {(matches?.length || 0) + (maclar?.length || 0)} maç
                 </Badge>
               )}
             </h2>
@@ -281,9 +308,9 @@ export default function FindMatch() {
                   </Card>
                 ))}
               </div>
-            ) : matches && matches.length > 0 ? (
+            ) : (matches && matches.length > 0) || (maclar && maclar.length > 0) ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {matches.map((match) => (
+                {matches?.map((match) => (
                   <Card 
                     key={match.id} 
                     className="hover-elevate cursor-pointer"
@@ -358,14 +385,71 @@ export default function FindMatch() {
                     </CardContent>
                   </Card>
                 ))}
+
+                {maclar?.map((mac) => (
+                  <Card 
+                    key={mac.macId} 
+                    className="hover-elevate cursor-pointer"
+                    data-testid={`card-mac-${mac.macId}`}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="font-semibold text-lg" data-testid={`text-mac-konum-${mac.macId}`}>
+                          {mac.konum}
+                        </h3>
+                        <Badge variant="default">Kullanıcı İlanı</Badge>
+                      </div>
+
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4" />
+                          <span>{mac.konum}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          <span data-testid={`text-mac-tarih-${mac.macId}`}>
+                            {mac.tarihSaat}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4" />
+                          <span data-testid={`text-mac-oyuncular-${mac.macId}`}>
+                            {mac.katilanOyuncular.length} oyuncu katıldı
+                          </span>
+                        </div>
+                      </div>
+
+                      {mac.gerekliMevkiler && mac.gerekliMevkiler.length > 0 && (
+                        <div className="mt-3 pt-3 border-t">
+                          <p className="text-xs text-muted-foreground mb-2">Aranan Mevkiler:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {mac.gerekliMevkiler.map((pos) => (
+                              <Badge key={pos} variant="outline" className="text-xs">
+                                {positionLabels[pos] || pos}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <Button 
+                        className="w-full mt-4" 
+                        size="sm"
+                        data-testid={`button-join-mac-${mac.macId}`}
+                      >
+                        Maça Katıl
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             ) : (
               <Card>
-                <CardContent className="p-8 text-center">
+                <CardContent className="p-8 text-center" data-testid="text-no-results">
                   <Users className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-medium mb-2">Maç Bulunamadı</h3>
                   <p className="text-muted-foreground">
-                    Arama kriterlerinize uygun maç bulunamadı. Filtreleri değiştirmeyi deneyin.
+                    Aradığınız kriterlere uygun maç bulunamadı.
                   </p>
                 </CardContent>
               </Card>
