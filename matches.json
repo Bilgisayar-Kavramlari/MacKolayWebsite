@@ -15,5 +15,40 @@
     "katilanOyuncular": [],
     "organizatorId": "0eb68be8-d72b-4d81-b6fe-20b19a2262f7",
     "geriBildirimler": []
+  },
+  {
+    "macId": "9ec9f65d-01b3-4801-a1b8-d69653967be6",
+    "sahaAdi": "Çubuklu Halısaha",
+    "konum": "Beykoz, İstanbul",
+    "tarih": "2025-11-25",
+    "saat": "20:00",
+    "oyuncuSayisi": 1,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "İleri Seviye",
+    "fiyat": 60,
+    "gerekliMevkiler": [
+      "defans"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "43bb44df-1d89-4621-9e66-ba7f98528e1f",
+    "geriBildirimler": []
+  },
+  {
+    "macId": "c3256c84-4fc9-457e-a422-d79376adb1a3",
+    "sahaAdi": "Test Sahası j49F",
+    "konum": "Kadıköy, İstanbul",
+    "tarih": "2025-11-26",
+    "saat": "19:00",
+    "oyuncuSayisi": 5,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "Orta Seviye",
+    "fiyat": 40,
+    "gerekliMevkiler": [
+      "defans",
+      "orta-saha"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "08544095-295e-48df-918c-cd14c1daf692",
+    "geriBildirimler": []
   }
 ]

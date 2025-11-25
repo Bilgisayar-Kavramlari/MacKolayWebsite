@@ -428,7 +428,7 @@ export default function FindMatch() {
                         <div className="flex items-center gap-2">
                           <Users className="w-4 h-4" />
                           <span data-testid={`text-mac-oyuncular-${mac.macId}`}>
-                            {mac.mevcutOyuncuSayisi}/{mac.oyuncuSayisi} oyuncu
+                            {mac.oyuncuSayisi} oyuncu aranıyor
                           </span>
                         </div>
                       </div>
@@ -451,7 +451,7 @@ export default function FindMatch() {
                           {mac.fiyat} TL
                         </span>
                         <Badge variant="secondary">
-                          {mac.oyuncuSayisi - mac.mevcutOyuncuSayisi} kişi aranıyor
+                          {Math.max(0, mac.oyuncuSayisi - (mac.mevcutOyuncuSayisi - 1))} boş yer
                         </Badge>
                       </div>
 

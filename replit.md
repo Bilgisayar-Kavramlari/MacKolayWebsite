@@ -87,15 +87,42 @@ Preferred communication style: Simple, everyday language.
 ### Authentication & Authorization
 
 **Current Implementation**
-- User schema with username/password fields
-- No active authentication middleware (prepared for future implementation)
-- Session storage configured with connect-pg-simple
-- Cookie-based session management ready but not enforced
+- User schema with username/password fields (bcrypt hashed)
+- Express-session for session management with JSON file storage
+- Cookie-based session management with secure credential handling
+- Protected routes redirect to /giris if not authenticated
+
+**API Endpoints**
+- POST /api/kayit - User registration (creates user with guvenilirlikPuani: 50)
+- POST /api/giris - User login (sets session)
+- GET /api/auth/durum - Check authentication status
+- GET /api/profil - Get user profile (requires auth)
+- POST /api/cikis - User logout
+- GET /api/maclarim - Get user's matches (requires auth)
 
 **Security Considerations**
-- Password field exists in schema (should be hashed before production)
-- HTTPS enforcement pending
-- CORS and credential handling configured in fetch requests
+- Passwords hashed with bcrypt (saltRounds: 10)
+- Session-based authentication
+- Credential handling configured in fetch requests
+
+### Recent Changes (November 2025)
+
+**Match Display Bug Fix**
+- Fixed player count display to show "X oyuncu aranıyor" (X players needed) instead of misleading "current/total" format
+- Badge now shows "X boş yer" (X available spots)
+
+**Immediate Navigation Update**
+- Login success now invalidates auth queries for instant UI update
+- No page refresh required to see authenticated navigation
+
+**New "Maçlarım" Feature**
+- Route: /maclarim (protected)
+- Shows matches user organized and joined
+- Three tabs: Tümü (All), Organizatör (Organized), Katıldıklarım (Joined)
+
+**Reliability Score Default**
+- New users start with guvenilirlikPuani: 50 (was 100)
+- Score range: 0-100, affects badge display on profile
 
 ### External Dependencies
 

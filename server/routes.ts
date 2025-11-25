@@ -415,6 +415,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/maclarim - Get user's matches (organized and joined)
+  app.get("/api/maclarim", (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
+    }
+
+    try {
+      const userId = req.session.userId;
+      const tumMaclar = getAllMatches();
+      
+      // Matches where user is the organizer
+      const organizatorOldugum = tumMaclar.filter(mac => mac.organizatorId === userId);
+      
+      // Matches where user has joined (includes both as participant and organizer)
+      const katildigim = tumMaclar.filter(mac => 
+        mac.katilanOyuncular.includes(userId) || mac.organizatorId === userId
+      );
+
+      res.json({
+        organizatorOldugum,
+        katildigim,
+      });
+    } catch (error) {
+      console.error("Maclarim error:", error);
+      res.status(500).json({ error: "Maçlarınız yüklenemedi" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

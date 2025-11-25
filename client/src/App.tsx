@@ -9,6 +9,7 @@ import Login from "@/pages/login";
 import Profile from "@/pages/profile";
 import FindMatch from "@/pages/find-match";
 import PostMatch from "@/pages/post-match";
+import MyMatches from "@/pages/my-matches";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/profil" component={Profile} />
       <Route path="/mac-bul" component={FindMatch} />
       <Route path="/mac-ilan-ver" component={PostMatch} />
+      <Route path="/maclarim" component={MyMatches} />
       <Route component={NotFound} />
     </Switch>
   );

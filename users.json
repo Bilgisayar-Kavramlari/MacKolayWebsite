@@ -89,5 +89,31 @@
     "weight": null,
     "age": null,
     "guvenilirlikPuani": 100
+  },
+  {
+    "id": "43bb44df-1d89-4621-9e66-ba7f98528e1f",
+    "username": "aka1",
+    "password": "$2b$10$grGnoDUiFzPVybSM5uBxEuqtTcBTP9MmcxGiA1XtDgselWpaMdzOm",
+    "fullName": "Abdulkadir Atakan",
+    "phone": "0555123456",
+    "position": "kaleci",
+    "profilePicture": null,
+    "height": 150,
+    "weight": 90,
+    "age": 35,
+    "guvenilirlikPuani": 100
+  },
+  {
+    "id": "08544095-295e-48df-918c-cd14c1daf692",
+    "username": "test_features_sF4qUf",
+    "password": "$2b$10$K4niKmHuGR0fn36d0d5cjOMxUPyuidtAwxZ03B8xsmtLWKvkTgdSG",
+    "fullName": "Test Features User",
+    "phone": "05559998877",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 50
   }
 ]

@@ -1,0 +1,23 @@
+The application has reached its final development stage. Implement the following critical fixes and new features exactly as requested by the user, and ensure all user-facing elements remain in **Turkish**.
+
+1.  **Bug Fix: Match Player Count Display Logic:**
+    * Review the match posting logic (`POST /mac-ilan-ver`) and the associated listing component logic.
+    * **Crucially, fix the bug** where the user's input for the **number of players needed** (`ihtiyac_duyulan_oyuncu_sayisi`) is currently being misinterpreted and displayed as the **total player count** in the match listing. The display must accurately reflect the number of spots that are **open/needed** as entered by the organizer.
+
+2.  **UX/Performance Fix: Immediate Navigation Update:**
+    * Improve the frontend authentication state management (in the main layout/navigation components).
+    * The visibility of login-dependent navigation items (e.g., **"Maç Oluştur"**, profile links/pictures) must update **instantly** upon a successful `POST /giris` (login) request, without requiring a tab switch, redirection, or full page refresh.
+
+3.  **New Feature: "Maçlarım" (My Matches) Tab Implementation:**
+    * **Frontend Navigation:** Add a new link titled **"Maçlarım"** to the main header navigation bar, visible **only when the user is authenticated**. Link this tab to the **`/maclarim`** route.
+    * **Frontend Component:** Create a new component and route for `/maclarim`. This page will display a list of matches the current user has created or joined.
+    * **Backend API:** Create a new authenticated Express API endpoint (`GET /api/maclarim`) that the frontend component will call.
+
+4.  **Data Initialization: Default Reliability Score Update:**
+    * Update the user registration logic (`POST /kayit` in the backend) to set the **`guvenilirlik_puani`** (reliability score) field for **all new users** to a default value of **50**. This value must be saved in the `users.json` file during registration.
+
+5.  **Final Deployment Steps:**
+    * Ensure all code changes are clean and complete.
+    * Compile the final application: `npm run build`
+    * Start the server: `npm start`
+    * Verify the application is fully functional and all text remains in **Turkish**.

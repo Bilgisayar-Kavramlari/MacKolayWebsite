@@ -101,13 +101,22 @@ export function Navigation() {
             Maç Bul
           </Link>
           {isLoggedIn && (
-            <Link 
-              href="/mac-ilan-ver"
-              className="text-base font-semibold leading-6 text-foreground hover:text-primary" 
-              data-testid="link-mac-ilan-ver"
-            >
-              Maç İlanı Ver
-            </Link>
+            <>
+              <Link 
+                href="/mac-ilan-ver"
+                className="text-base font-semibold leading-6 text-foreground hover:text-primary" 
+                data-testid="link-mac-ilan-ver"
+              >
+                Maç İlanı Ver
+              </Link>
+              <Link 
+                href="/maclarim"
+                className="text-base font-semibold leading-6 text-foreground hover:text-primary" 
+                data-testid="link-maclarim"
+              >
+                Maçlarım
+              </Link>
+            </>
           )}
         </div>
 
@@ -179,14 +188,24 @@ export function Navigation() {
               Maç Bul
             </Link>
             {isLoggedIn && (
-              <Link 
-                href="/mac-ilan-ver"
-                className="block rounded-md px-3 py-2 text-base font-semibold hover:bg-accent" 
-                data-testid="link-mobile-mac-ilan-ver"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Maç İlanı Ver
-              </Link>
+              <>
+                <Link 
+                  href="/mac-ilan-ver"
+                  className="block rounded-md px-3 py-2 text-base font-semibold hover:bg-accent" 
+                  data-testid="link-mobile-mac-ilan-ver"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Maç İlanı Ver
+                </Link>
+                <Link 
+                  href="/maclarim"
+                  className="block rounded-md px-3 py-2 text-base font-semibold hover:bg-accent" 
+                  data-testid="link-mobile-maclarim"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Maçlarım
+                </Link>
+              </>
             )}
             <div className="flex flex-col gap-2 pt-4 border-t">
               {isLoggedIn ? (

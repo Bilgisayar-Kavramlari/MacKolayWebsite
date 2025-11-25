@@ -1,0 +1,32 @@
+The application has reached its final development stage. Implement the following critical fixes and new features exactly as requested by the user:
+
+1. Match Creation Bug Fix and Logic Update
+Logic Review: Review the match posting logic (POST /mac-ilan-ver) and the resulting match listing component.
+
+Crucial Fix: Fix the bug where the user's input for the number of players needed (ihtiyac_duyulan_oyuncu_sayisi) is incorrectly displayed as the total player count (e.g., if the user needs 1 player, the listing shows the match has only 1 total spot).
+
+Requirement: The display in the match listing must accurately reflect how many players are still needed (i.e., the ihtiyac_duyulan_oyuncu_sayisi value).
+
+2. UX/Performance Fix: Immediate Navigation Update
+State Management: Improve the frontend authentication state management in the main application layout (App.tsx or the main navigation component).
+
+Immediate Update: The navigation bar elements (specifically the visibility of "Maç Oluştur", profile links/pictures, and the disappearance of "Giriş Yap"/"Kayıt Ol") must update instantly upon a successful POST /giris (login) request. The navigation should reflect the logged-in state without requiring a manual tab switch or page refresh.
+
+3. New Feature: "Maçlarım" (My Matches) Tab
+Frontend Navigation: Add a new navigation link titled "Maçlarım" to the main header bar. This link must only be visible when the user is authenticated (logged in). Link the tab to the /maclarim route.
+
+Frontend Component: Create a new component file (e.g., client/src/pages/Maclarim.tsx) and define the corresponding route in the React Router setup. The page content should initially display a placeholder list of matches created by or joined by the current user.
+
+Backend API: Create a new authenticated Express API endpoint (e.g., GET /api/maclarim). This endpoint should eventually query the match data and filter results to return matches relevant to the authenticated user.
+
+4. Data Initialization: Default Reliability Score
+Registration Logic Update: Update the user registration logic (POST /kayit in the backend) to set the default value of the guvenilirlik_puani field for all newly registered users to exactly 50. This value must be persisted in the users.json file during the registration process.
+
+Final Deployment Steps
+Ensure all new and modified files are included in the project.
+
+Compile the application: npm run build
+
+Start the server: npm start
+
+Verify all user-facing elements remain in Turkish.

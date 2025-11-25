@@ -306,7 +306,7 @@ export class MemStorage implements IStorage {
       height: insertUser.height ?? null,
       weight: insertUser.weight ?? null,
       age: insertUser.age ?? null,
-      guvenilirlikPuani: 100,
+      guvenilirlikPuani: 50,
     };
     users.push(user);
     writeUsersToFile(users);
