@@ -6,8 +6,16 @@ import express, {
   Response,
   NextFunction,
 } from "express";
+import session from "express-session";
 
 import { registerRoutes } from "./routes";
+
+declare module "express-session" {
+  interface SessionData {
+    userId: string;
+    username: string;
+  }
+}
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
@@ -33,6 +41,17 @@ app.use(express.json({
   }
 }));
 app.use(express.urlencoded({ extended: false }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'halisaha-secret-key-2024',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  }
+}));
 
 app.use((req, res, next) => {
   const start = Date.now();

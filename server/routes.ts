@@ -13,6 +13,11 @@ const registerSchema = insertUserSchema.extend({
   position: z.string().min(1, "Mevki seçiniz"),
 });
 
+const loginSchema = z.object({
+  username: z.string().min(1, "Kullanıcı adı gereklidir"),
+  password: z.string().min(1, "Şifre gereklidir"),
+});
+
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/matches", async (req, res) => {
     try {
@@ -113,6 +118,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Registration error:", error);
       res.status(500).json({ error: "Kayıt işlemi sırasında bir hata oluştu" });
     }
+  });
+
+  app.post("/api/giris", async (req, res) => {
+    try {
+      const validationResult = loginSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        const errorMessage = validationResult.error.errors[0]?.message || "Geçersiz form verisi";
+        return res.status(400).json({ error: errorMessage });
+      }
+
+      const { username, password } = validationResult.data;
+
+      const user = await storage.getUserByUsername(username);
+      if (!user) {
+        return res.status(401).json({ error: "Hatalı Kullanıcı Adı veya Şifre" });
+      }
+
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ error: "Hatalı Kullanıcı Adı veya Şifre" });
+      }
+
+      req.session.userId = user.id;
+      req.session.username = user.username;
+
+      const { password: _, ...userWithoutPassword } = user;
+      
+      res.json({
+        message: "Giriş başarılı!",
+        user: userWithoutPassword,
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ error: "Giriş işlemi sırasında bir hata oluştu" });
+    }
+  });
+
+  app.get("/api/profil", async (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
+    }
+
+    try {
+      const user = await storage.getUser(req.session.userId);
+      if (!user) {
+        return res.status(404).json({ error: "Kullanıcı bulunamadı" });
+      }
+
+      const { password: _, ...userWithoutPassword } = user;
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.error("Profile error:", error);
+      res.status(500).json({ error: "Profil bilgileri alınamadı" });
+    }
+  });
+
+  app.post("/api/cikis", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ error: "Çıkış yapılamadı" });
+      }
+      res.json({ message: "Çıkış yapıldı" });
+    });
   });
 
   const httpServer = createServer(app);
