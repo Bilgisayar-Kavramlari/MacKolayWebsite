@@ -124,7 +124,7 @@ Preferred communication style: Simple, everyday language.
 - New users start with guvenilirlikPuani: 50 (was 100)
 - Score range: 0-100, affects badge display on profile
 
-**Homepage Search Integration (Latest)**
+**Homepage Search Integration**
 - Hero section search form redirects to /mac-bul with URL query parameters
 - Parameters: konum (location) and tarih (date)
 - /mac-bul reads URL params and pre-fills search filters
@@ -139,6 +139,20 @@ Preferred communication style: Simple, everyday language.
 - POST /api/maclar uses session.userId as organizatorId
 - GET /api/maclarim returns organized and joined matches
 - Proper user ID linkage for match ownership
+
+**AuthContext with LocalStorage Caching (Latest)**
+- client/src/lib/auth-context.tsx provides instant profile rendering after login
+- User data cached in localStorage for immediate display without API delay
+- Background API sync validates session; clears cache if session expired
+- Login page caches user data from /api/profil before redirecting
+- Navigation and Profile pages consume AuthContext for instant UI updates
+
+**Secured Match Details Endpoint (Latest)**
+- GET /api/maclar/:macId scrubs sensitive data for unauthenticated/non-involved users
+- Public view returns only: macId, sahaAdi, konum, tarih, saat, oyuncuSayisi, mevcutOyuncuSayisi, seviye, fiyat, gerekliMevkiler
+- organizatorId and katilanOyuncular hidden from non-involved users
+- organizatorTelefon only exposed to joined participants (not organizers or public)
+- Duplicate unsecured route removed to prevent security regression
 
 ### External Dependencies
 
