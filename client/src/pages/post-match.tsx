@@ -58,10 +58,10 @@ const positionOptions = [
 ];
 
 const skillLevelOptions = [
-  { value: "beginner", label: "Başlangıç" },
-  { value: "intermediate", label: "Orta" },
-  { value: "advanced", label: "İleri" },
-  { value: "all", label: "Tüm Seviyeler" },
+  { value: "Başlangıç", label: "Başlangıç" },
+  { value: "Orta Seviye", label: "Orta" },
+  { value: "İleri Seviye", label: "İleri" },
+  { value: "Tüm Seviyeler", label: "Tüm Seviyeler" },
 ];
 
 export default function PostMatch() {
