@@ -6,14 +6,20 @@ const MATCHES_FILE = path.join(process.cwd(), "matches.json");
 
 export interface MacVerisi {
   macId: string;
+  sahaAdi: string;
   konum: string;
-  tarihSaat: string;
+  tarih: string;
+  saat: string;
+  oyuncuSayisi: number;
+  mevcutOyuncuSayisi: number;
+  seviye: string;
+  fiyat: number;
   gerekliMevkiler: string[];
   katilanOyuncular: string[];
   organizatorId: string;
 }
 
-export type YeniMac = Omit<MacVerisi, "macId" | "katilanOyuncular">;
+export type YeniMac = Omit<MacVerisi, "macId" | "katilanOyuncular" | "mevcutOyuncuSayisi">;
 
 function readMatchesFromFile(): MacVerisi[] {
   try {
@@ -53,8 +59,14 @@ export function saveMatch(newMatch: YeniMac): MacVerisi {
   
   const match: MacVerisi = {
     macId,
+    sahaAdi: newMatch.sahaAdi,
     konum: newMatch.konum,
-    tarihSaat: newMatch.tarihSaat,
+    tarih: newMatch.tarih,
+    saat: newMatch.saat,
+    oyuncuSayisi: newMatch.oyuncuSayisi,
+    mevcutOyuncuSayisi: 1,
+    seviye: newMatch.seviye,
+    fiyat: newMatch.fiyat,
     gerekliMevkiler: newMatch.gerekliMevkiler,
     katilanOyuncular: [],
     organizatorId: newMatch.organizatorId,
@@ -76,6 +88,7 @@ export function addPlayerToMatch(macId: string, oyuncuId: string): MacVerisi | n
   
   if (!matches[matchIndex].katilanOyuncular.includes(oyuncuId)) {
     matches[matchIndex].katilanOyuncular.push(oyuncuId);
+    matches[matchIndex].mevcutOyuncuSayisi = matches[matchIndex].katilanOyuncular.length + 1;
     writeMatchesToFile(matches);
   }
   
@@ -93,6 +106,7 @@ export function removePlayerFromMatch(macId: string, oyuncuId: string): MacVeris
   matches[matchIndex].katilanOyuncular = matches[matchIndex].katilanOyuncular.filter(
     id => id !== oyuncuId
   );
+  matches[matchIndex].mevcutOyuncuSayisi = matches[matchIndex].katilanOyuncular.length + 1;
   writeMatchesToFile(matches);
   
   return matches[matchIndex];

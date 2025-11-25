@@ -37,8 +37,14 @@ import type { Match } from "@shared/schema";
 
 interface MacVerisi {
   macId: string;
+  sahaAdi: string;
   konum: string;
-  tarihSaat: string;
+  tarih: string;
+  saat: string;
+  oyuncuSayisi: number;
+  mevcutOyuncuSayisi: number;
+  seviye: string;
+  fiyat: number;
   gerekliMevkiler: string[];
   katilanOyuncular: string[];
   organizatorId: string;
@@ -394,27 +400,35 @@ export default function FindMatch() {
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between mb-3">
-                        <h3 className="font-semibold text-lg" data-testid={`text-mac-konum-${mac.macId}`}>
-                          {mac.konum}
+                        <h3 className="font-semibold text-lg" data-testid={`text-mac-saha-${mac.macId}`}>
+                          {mac.sahaAdi}
                         </h3>
-                        <Badge variant="default">Kullanıcı İlanı</Badge>
+                        <Badge variant="outline">
+                          {skillLevelLabels[mac.seviye] || mac.seviye}
+                        </Badge>
                       </div>
 
                       <div className="space-y-2 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
                           <MapPin className="w-4 h-4" />
-                          <span>{mac.konum}</span>
+                          <span data-testid={`text-mac-konum-${mac.macId}`}>{mac.konum}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           <span data-testid={`text-mac-tarih-${mac.macId}`}>
-                            {mac.tarihSaat}
+                            {mac.tarih}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          <span data-testid={`text-mac-saat-${mac.macId}`}>
+                            {mac.saat}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Users className="w-4 h-4" />
                           <span data-testid={`text-mac-oyuncular-${mac.macId}`}>
-                            {mac.katilanOyuncular.length} oyuncu katıldı
+                            {mac.mevcutOyuncuSayisi}/{mac.oyuncuSayisi} oyuncu
                           </span>
                         </div>
                       </div>
@@ -431,6 +445,15 @@ export default function FindMatch() {
                           </div>
                         </div>
                       )}
+
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t">
+                        <span className="text-lg font-bold text-primary">
+                          {mac.fiyat} TL
+                        </span>
+                        <Badge variant="secondary">
+                          {mac.oyuncuSayisi - mac.mevcutOyuncuSayisi} kişi aranıyor
+                        </Badge>
+                      </div>
 
                       <Button 
                         className="w-full mt-4" 

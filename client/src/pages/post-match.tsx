@@ -85,26 +85,24 @@ export default function PostMatch() {
 
   const postMatchMutation = useMutation({
     mutationFn: async (data: PostMatchForm) => {
-      const response = await apiRequest("POST", "/api/matches", {
-        venueName: data.venueName,
-        location: data.location,
-        date: data.date,
-        time: data.time,
-        maxPlayers: parseInt(data.maxPlayers),
-        skillLevel: data.skillLevel,
-        price: parseInt(data.price),
-        currentPlayers: 1,
-        venueId: "custom",
-        imageUrl: "/placeholder-match.jpg",
-        neededPositions: data.neededPositions,
+      const response = await apiRequest("POST", "/api/maclar", {
+        sahaAdi: data.venueName,
+        konum: data.location,
+        tarih: data.date,
+        saat: data.time,
+        oyuncuSayisi: parseInt(data.maxPlayers),
+        seviye: data.skillLevel,
+        fiyat: parseInt(data.price),
+        gerekliMevkiler: data.neededPositions,
       });
       return response.json();
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/maclar'] });
       queryClient.invalidateQueries({ queryKey: ['/api/matches'] });
       toast({
         title: "Başarılı",
-        description: "Maç ilanınız yayınlandı!",
+        description: "Maç başarıyla yayınlandı!",
       });
       setLocation("/mac-bul");
     },

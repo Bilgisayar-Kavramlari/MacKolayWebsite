@@ -239,7 +239,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       if (tarih && typeof tarih === "string") {
         matches = matches.filter(m =>
-          m.tarihSaat.includes(tarih)
+          m.tarih.includes(tarih)
         );
       }
 
@@ -269,21 +269,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const { konum, tarihSaat, gerekliMevkiler } = req.body;
+      const { 
+        sahaAdi, 
+        konum, 
+        tarih, 
+        saat, 
+        oyuncuSayisi, 
+        seviye, 
+        fiyat, 
+        gerekliMevkiler 
+      } = req.body;
 
-      if (!konum || !tarihSaat || !gerekliMevkiler) {
+      if (!sahaAdi || !konum || !tarih || !saat || !oyuncuSayisi || !seviye || fiyat === undefined || !gerekliMevkiler) {
         return res.status(400).json({ error: "Tüm alanları doldurunuz" });
       }
 
       const newMatch = saveMatch({
+        sahaAdi,
         konum,
-        tarihSaat,
+        tarih,
+        saat,
+        oyuncuSayisi: parseInt(oyuncuSayisi),
+        seviye,
+        fiyat: parseInt(fiyat),
         gerekliMevkiler,
         organizatorId: req.session.userId,
       });
 
       res.status(201).json({
-        message: "Maç ilanı başarıyla oluşturuldu!",
+        message: "Maç başarıyla yayınlandı!",
         mac: newMatch,
       });
     } catch (error) {
