@@ -147,12 +147,21 @@ Preferred communication style: Simple, everyday language.
 - Login page caches user data from /api/profil before redirecting
 - Navigation and Profile pages consume AuthContext for instant UI updates
 
-**Secured Match Details Endpoint (Latest)**
+**Secured Match Details Endpoint**
 - GET /api/maclar/:macId scrubs sensitive data for unauthenticated/non-involved users
 - Public view returns only: macId, sahaAdi, konum, tarih, saat, oyuncuSayisi, mevcutOyuncuSayisi, seviye, fiyat, gerekliMevkiler
 - organizatorId and katilanOyuncular hidden from non-involved users
 - organizatorTelefon only exposed to joined participants (not organizers or public)
 - Duplicate unsecured route removed to prevent security regression
+
+**Authentication State Synchronization Fix (Latest)**
+- Problem: Navigation and protected components failed to recognize auth state immediately after login
+- Root cause: Browser caching (304 responses) and React Query stale data
+- Solution 1: Added no-cache headers to `/api/auth/durum` and `/api/profil` endpoints
+- Solution 2: Added `isManuallyAuthenticated` flag in AuthContext for immediate state updates
+- Solution 3: Changed auth queries to `staleTime: 0` and `gcTime: 0`
+- Solution 4: Login flow now awaits query invalidation and refetch before navigation
+- Result: Navigation immediately shows authenticated links after login without page refresh
 
 ### External Dependencies
 
