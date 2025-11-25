@@ -37,11 +37,12 @@ const positionLabels: Record<string, string> = {
   forvet: "Forvet",
 };
 
+type UserWithScore = Omit<UserType, 'password'>;
+
 const placeholderStats = {
-  goals: 10,
-  assists: 5,
-  matchesPlayed: 23,
-  reliabilityScore: 95,
+  goals: 0,
+  assists: 0,
+  matchesPlayed: 0,
 };
 
 const placeholderUpcomingMatches = [
@@ -111,9 +112,11 @@ export default function Profile() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
 
-  const { data: user, isLoading, error } = useQuery<Omit<UserType, 'password'>>({
+  const { data: user, isLoading, error } = useQuery<UserWithScore>({
     queryKey: ['/api/profil'],
   });
+
+  const reliabilityScore = user?.guvenilirlikPuani ?? 100;
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
@@ -371,26 +374,38 @@ export default function Profile() {
                           stroke="currentColor"
                           strokeWidth="12"
                           fill="none"
-                          strokeDasharray={`${(placeholderStats.reliabilityScore / 100) * 351.86} 351.86`}
+                          strokeDasharray={`${(reliabilityScore / 100) * 351.86} 351.86`}
                           className="text-primary"
                           strokeLinecap="round"
                         />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-3xl font-bold" data-testid="text-reliability-score">
-                          {placeholderStats.reliabilityScore}
+                          {reliabilityScore}
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="text-center">
                     <p className="text-sm text-muted-foreground">
-                      100 üzerinden {placeholderStats.reliabilityScore} puan
+                      100 üzerinden {reliabilityScore} puan
                     </p>
-                    <Badge variant="default" className="mt-2">
-                      <Star className="w-3 h-3 mr-1" />
-                      Güvenilir Oyuncu
-                    </Badge>
+                    {reliabilityScore >= 80 ? (
+                      <Badge variant="default" className="mt-2">
+                        <Star className="w-3 h-3 mr-1" />
+                        Güvenilir Oyuncu
+                      </Badge>
+                    ) : reliabilityScore >= 50 ? (
+                      <Badge variant="secondary" className="mt-2">
+                        <Star className="w-3 h-3 mr-1" />
+                        Orta Güvenilirlik
+                      </Badge>
+                    ) : (
+                      <Badge variant="destructive" className="mt-2">
+                        <Star className="w-3 h-3 mr-1" />
+                        Düşük Güvenilirlik
+                      </Badge>
+                    )}
                   </div>
                 </div>
               </CardContent>

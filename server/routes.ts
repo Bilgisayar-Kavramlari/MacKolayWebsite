@@ -19,7 +19,27 @@ const loginSchema = z.object({
   password: z.string().min(1, "Şifre gereklidir"),
 });
 
+// Authentication middleware
+function isAuthenticated(req: any, res: any, next: any) {
+  if (req.session && req.session.userId) {
+    return next();
+  }
+  return res.status(401).json({ error: "Oturum açmanız gerekiyor", redirect: "/giris" });
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth status check endpoint
+  app.get("/api/auth/durum", (req, res) => {
+    if (req.session && req.session.userId) {
+      res.json({ 
+        authenticated: true, 
+        userId: req.session.userId,
+        username: req.session.username 
+      });
+    } else {
+      res.json({ authenticated: false });
+    }
+  });
   app.get("/api/matches", async (req, res) => {
     try {
       const { location, date, skillLevel, position } = req.query;
@@ -202,7 +222,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const { password: _, ...userWithoutPassword } = user;
-      res.json(userWithoutPassword);
+      res.json({
+        ...userWithoutPassword,
+        guvenilirlikPuani: (user as any).guvenilirlikPuani ?? 100,
+      });
     } catch (error) {
       console.error("Profile error:", error);
       res.status(500).json({ error: "Profil bilgileri alınamadı" });
