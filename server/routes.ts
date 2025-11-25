@@ -21,11 +21,12 @@ const loginSchema = z.object({
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/matches", async (req, res) => {
     try {
-      const { location, date, skillLevel } = req.query;
+      const { location, date, skillLevel, position } = req.query;
       const filters = {
         location: location as string | undefined,
         date: date as string | undefined,
         skillLevel: skillLevel as string | undefined,
+        position: position as string | undefined,
       };
       
       const matches = await storage.getMatches(filters);

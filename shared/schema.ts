@@ -28,6 +28,7 @@ export const matches = pgTable("matches", {
   skillLevel: text("skill_level").notNull(),
   price: integer("price").notNull(),
   imageUrl: text("image_url").notNull(),
+  neededPositions: text("needed_positions").array(),
 });
 
 export const venues = pgTable("venues", {

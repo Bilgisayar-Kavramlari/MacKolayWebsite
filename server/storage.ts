@@ -42,7 +42,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   
-  getMatches(filters?: { location?: string; date?: string; skillLevel?: string }): Promise<Match[]>;
+  getMatches(filters?: { location?: string; date?: string; skillLevel?: string; position?: string }): Promise<Match[]>;
   getMatch(id: string): Promise<Match | undefined>;
   createMatch(match: InsertMatch): Promise<Match>;
   
@@ -141,6 +141,7 @@ export class MemStorage implements IStorage {
         skillLevel: "Orta Seviye",
         price: 50,
         imageUrl: venueList[0].imageUrl,
+        neededPositions: ["kaleci", "defans"],
       },
       {
         venueId: venueList[1].id,
@@ -153,6 +154,7 @@ export class MemStorage implements IStorage {
         skillLevel: "İleri Seviye",
         price: 60,
         imageUrl: venueList[1].imageUrl,
+        neededPositions: ["orta-saha", "forvet"],
       },
       {
         venueId: venueList[2].id,
@@ -165,6 +167,7 @@ export class MemStorage implements IStorage {
         skillLevel: "Başlangıç",
         price: 40,
         imageUrl: venueList[2].imageUrl,
+        neededPositions: ["kaleci", "defans", "orta-saha", "forvet"],
       },
       {
         venueId: venueList[3].id,
@@ -177,6 +180,7 @@ export class MemStorage implements IStorage {
         skillLevel: "Orta Seviye",
         price: 45,
         imageUrl: venueList[3].imageUrl,
+        neededPositions: ["forvet"],
       },
       {
         venueId: venueList[4].id,
@@ -189,6 +193,7 @@ export class MemStorage implements IStorage {
         skillLevel: "İleri Seviye",
         price: 55,
         imageUrl: venueList[4].imageUrl,
+        neededPositions: ["kaleci", "orta-saha"],
       },
       {
         venueId: venueList[5].id,
@@ -201,6 +206,7 @@ export class MemStorage implements IStorage {
         skillLevel: "Orta Seviye",
         price: 50,
         imageUrl: venueList[5].imageUrl,
+        neededPositions: ["defans", "orta-saha"],
       },
     ];
 
@@ -272,7 +278,7 @@ export class MemStorage implements IStorage {
     return user;
   }
 
-  async getMatches(filters?: { location?: string; date?: string; skillLevel?: string }): Promise<Match[]> {
+  async getMatches(filters?: { location?: string; date?: string; skillLevel?: string; position?: string }): Promise<Match[]> {
     let matches = Array.from(this.matches.values());
 
     if (filters) {
@@ -286,6 +292,11 @@ export class MemStorage implements IStorage {
       }
       if (filters.skillLevel) {
         matches = matches.filter(m => m.skillLevel === filters.skillLevel);
+      }
+      if (filters.position) {
+        matches = matches.filter(m => 
+          m.neededPositions && m.neededPositions.includes(filters.position!)
+        );
       }
     }
 
