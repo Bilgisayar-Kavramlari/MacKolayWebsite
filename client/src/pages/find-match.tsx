@@ -37,7 +37,6 @@ import {
 } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import type { Match } from "@shared/schema";
 
 interface MacVerisi {
   macId: string;
@@ -163,39 +162,21 @@ export default function FindMatch() {
     }
   }, []);
 
-  const buildQueryUrl = () => {
-    const params = new URLSearchParams();
-    if (filters.location) params.set('location', filters.location);
-    if (filters.date) params.set('date', filters.date);
-    if (filters.skillLevel) params.set('skillLevel', filters.skillLevel);
-    if (filters.position) params.set('position', filters.position);
-    const queryString = params.toString();
-    return queryString ? `/api/matches?${queryString}` : '/api/matches';
-  };
-
-  const { data: matches, isLoading } = useQuery<Match[]>({
-    queryKey: ['/api/matches', filters.location, filters.date, filters.skillLevel, filters.position],
-    queryFn: async () => {
-      const response = await fetch(buildQueryUrl());
-      if (!response.ok) throw new Error('Maçlar yüklenemedi');
-      return response.json();
-    },
-  });
-
   const buildMaclarQueryUrl = () => {
     const params = new URLSearchParams();
     if (filters.location) params.set('konum', filters.location);
     if (filters.date) params.set('tarih', filters.date);
     if (filters.position) params.set('mevki', filters.position);
+    if (filters.skillLevel && filters.skillLevel !== 'all') params.set('seviye', filters.skillLevel);
     const queryString = params.toString();
     return queryString ? `/api/maclar?${queryString}` : '/api/maclar';
   };
 
-  const { data: maclar, isLoading: maclarLoading } = useQuery<MacVerisi[]>({
-    queryKey: ['/api/maclar', filters.location, filters.date, filters.position],
+  const { data: maclar, isLoading } = useQuery<MacVerisi[]>({
+    queryKey: ['/api/maclar', filters.location, filters.date, filters.position, filters.skillLevel],
     queryFn: async () => {
       const response = await fetch(buildMaclarQueryUrl());
-      if (!response.ok) throw new Error('Kullanıcı maçları yüklenemedi');
+      if (!response.ok) throw new Error('Maçlar yüklenemedi');
       return response.json();
     },
   });
@@ -357,9 +338,9 @@ export default function FindMatch() {
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Users className="w-5 h-5" />
               Mevcut Maçlar
-              {(matches || maclar) && (
+              {maclar && (
                 <Badge variant="secondary" data-testid="badge-match-count">
-                  {(matches?.length || 0) + (maclar?.length || 0)} maç
+                  {maclar.length} maç
                 </Badge>
               )}
             </h2>
@@ -377,87 +358,9 @@ export default function FindMatch() {
                   </Card>
                 ))}
               </div>
-            ) : (matches && matches.length > 0) || (maclar && maclar.length > 0) ? (
+            ) : maclar && maclar.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {matches?.map((match) => (
-                  <Card 
-                    key={match.id} 
-                    className="hover-elevate cursor-pointer"
-                    data-testid={`card-match-${match.id}`}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-3">
-                        <h3 className="font-semibold text-lg" data-testid={`text-match-title-${match.id}`}>
-                          {match.venueName}
-                        </h3>
-                        <Badge variant="outline">
-                          {skillLevelLabels[match.skillLevel] || match.skillLevel}
-                        </Badge>
-                      </div>
-
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="w-4 h-4" />
-                          <span data-testid={`text-match-location-${match.id}`}>
-                            {match.location}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          <span data-testid={`text-match-date-${match.id}`}>
-                            {match.date}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className="w-4 h-4" />
-                          <span data-testid={`text-match-time-${match.id}`}>
-                            {match.time}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4" />
-                          <span data-testid={`text-match-players-${match.id}`}>
-                            {match.currentPlayers}/{match.maxPlayers} oyuncu
-                          </span>
-                        </div>
-                      </div>
-
-                      {match.neededPositions && match.neededPositions.length > 0 && (
-                        <div className="mt-3 pt-3 border-t">
-                          <p className="text-xs text-muted-foreground mb-2">Aranan Mevkiler:</p>
-                          <div className="flex flex-wrap gap-1">
-                            {match.neededPositions.map((pos) => (
-                              <Badge key={pos} variant="outline" className="text-xs">
-                                {positionLabels[pos] || pos}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between mt-3 pt-3 border-t">
-                        <span className="text-lg font-bold text-primary">
-                          {match.price} TL
-                        </span>
-                        <Badge variant="secondary">
-                          {match.maxPlayers - match.currentPlayers} kişi aranıyor
-                        </Badge>
-                      </div>
-
-                      <Button 
-                        className="w-full mt-4" 
-                        size="sm"
-                        data-testid={`button-join-match-${match.id}`}
-                        onClick={() => handleJoinMatch(match.id)}
-                        disabled={joinMatchMutation.isPending}
-                      >
-                        {joinMatchMutation.isPending ? "Katılınıyor..." : "Maça Katıl"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-
-                {maclar?.map((mac) => (
+                {maclar.map((mac) => (
                   <Card 
                     key={mac.macId} 
                     className="hover-elevate cursor-pointer"

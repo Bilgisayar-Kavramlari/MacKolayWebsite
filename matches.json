@@ -6,13 +6,15 @@
     "tarih": "2025-11-26",
     "saat": "20:00",
     "oyuncuSayisi": 14,
-    "mevcutOyuncuSayisi": 1,
+    "mevcutOyuncuSayisi": 2,
     "seviye": "Orta Seviye",
     "fiyat": 100,
     "gerekliMevkiler": [
       "Kaleci"
     ],
-    "katilanOyuncular": [],
+    "katilanOyuncular": [
+      "24e37930-c089-44ef-8d46-d208e22e27ce"
+    ],
     "organizatorId": "0eb68be8-d72b-4d81-b6fe-20b19a2262f7",
     "geriBildirimler": []
   },

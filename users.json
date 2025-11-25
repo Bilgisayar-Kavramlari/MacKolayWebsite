@@ -206,5 +206,31 @@
     "weight": 90,
     "age": 30,
     "guvenilirlikPuani": 50
+  },
+  {
+    "id": "49322f08-521e-4645-bf32-eeaa3a48b875",
+    "username": "testuser_ILH-Qe",
+    "password": "$2b$10$ZKxjvkHxRlQpNYX5Cuwc2eDha01tskByR50Lw7IaDlPjvrGkxGwA.",
+    "fullName": "Test User ILH-Qe",
+    "phone": "05551234567",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 50
+  },
+  {
+    "id": "24e37930-c089-44ef-8d46-d208e22e27ce",
+    "username": "jointest_SYI5M8",
+    "password": "$2b$10$.pDhELHncRFAf8XobfQ.ce3CRDKE.QQIa3zrA8Ctn85nItn3Q7nOy",
+    "fullName": "Join Test SYI5M8",
+    "phone": "05551234567",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": 180,
+    "weight": 75,
+    "age": 28,
+    "guvenilirlikPuani": 50
   }
 ]
