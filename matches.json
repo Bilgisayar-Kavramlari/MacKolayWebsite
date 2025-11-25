@@ -157,5 +157,23 @@
     "katilanOyuncular": [],
     "organizatorId": "5ca205a7-6eae-4364-8f1b-6025374b2fd3",
     "geriBildirimler": []
+  },
+  {
+    "macId": "f7ce5127-2b14-423f-b582-a3ce19c93aaf",
+    "sahaAdi": "Beşiktaş Spor Tesisi",
+    "konum": "Beşiktaş, İstanbul",
+    "tarih": "2025-12-31",
+    "saat": "19:00",
+    "oyuncuSayisi": 3,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "İleri Seviye",
+    "fiyat": 100,
+    "gerekliMevkiler": [
+      "kaleci",
+      "orta-saha"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c",
+    "geriBildirimler": []
   }
 ]

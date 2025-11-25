@@ -193,5 +193,18 @@
     "weight": 70,
     "age": 25,
     "guvenilirlikPuani": 50
+  },
+  {
+    "id": "7565cb98-f16f-46c8-98fd-64d5a5bfacd5",
+    "username": "mert1",
+    "password": "$2b$10$DFeXX3rwmwiyFpUf4JeE7.hpYYX.Ab4R5kN7nZ.TVr9TTea2zF2/K",
+    "fullName": "Mehmet Yılmaz",
+    "phone": "0555123456",
+    "position": "defans",
+    "profilePicture": null,
+    "height": 180,
+    "weight": 90,
+    "age": 30,
+    "guvenilirlikPuani": 50
   }
 ]

@@ -30,6 +30,9 @@ export function log(message: string, source = "express") {
 
 export const app = express();
 
+// Trust the first proxy (required for running behind Replit's proxy in production)
+app.set('trust proxy', 1);
+
 declare module 'http' {
   interface IncomingMessage {
     rawBody: unknown
@@ -46,9 +49,11 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'halisaha-secret-key-2024',
   resave: false,
   saveUninitialized: false,
+  proxy: true, // Required for running behind a proxy
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
+    sameSite: 'lax', // Required for modern browser compatibility and security
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   }
 }));

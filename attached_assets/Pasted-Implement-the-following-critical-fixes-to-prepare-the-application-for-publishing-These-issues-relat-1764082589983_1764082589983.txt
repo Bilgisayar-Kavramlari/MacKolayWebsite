@@ -1,0 +1,19 @@
+Implement the following critical fixes to prepare the application for publishing. These issues relate directly to session persistence in a public environment and data integrity.
+
+1.  **Critical Bug: Match Joining and "My Matches" Synchronization (Data Persistence):**
+    * **Backend Logic:** Review the match joining API endpoint (`POST /match/:id/join`). Ensure that the endpoint correctly saves the **authenticated user's ID** to the target match's list of participants (`participants_list`) in the backend storage (e.g., `matches.json`).
+    * **"My Matches" Endpoint Logic:** The `GET /api/maclarim` endpoint must be updated to successfully return **all matches** where the authenticated user's ID is present in the match's `participants_list`.
+    * **Frontend Validation:** Verify that after successfully joining a match, navigating to the "Maçlarım" (My Matches) tab immediately displays the newly joined match.
+
+2.  **Critical Bug: Post-Publish Session Loss (Authentication Guard Failure):**
+    * This issue occurs when the session is lost in a published environment (like behind Replit's proxy), causing protected pages (like `/maclarim` or `/mac-olustur`) to show the "you must log in" warning even when the user is authenticated.
+    * **Express Session Configuration:** Update the `express-session` middleware settings in your backend (`server/app.ts` or `index.ts`) for public deployment reliability:
+        * Add `proxy: true` to inform Express that it is running behind a proxy.
+        * Review the `cookie` settings, specifically ensuring they include `secure: true` (necessary for HTTPS/public domain cookies) and potentially `sameSite: 'Lax'` for modern browser compatibility and security.
+    * **Middleware Check:** Confirm that the authentication check middleware (`isLoggedIn` or similar) runs correctly on all protected routes, using the now correctly configured session cookie.
+
+### Final Deployment Steps
+* Commit and save all code changes.
+* Re-compile the application: `npm run build`
+* Restart the server: `npm start`
+* Test the application using the published (non-local) URL to confirm session persistence and correct navigation to protected routes.

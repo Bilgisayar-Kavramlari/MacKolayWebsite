@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useQuery } from "@tanstack/react-query";
-import { useSearch } from "wouter";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useSearch, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { queryClient, apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/lib/auth-context";
 import {
   Form,
   FormControl,
@@ -91,6 +94,9 @@ const skillLevelLabels: Record<string, string> = {
 export default function FindMatch() {
   const searchString = useSearch();
   const urlParams = new URLSearchParams(searchString);
+  const [, setNavigationLocation] = useLocation();
+  const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
   
   const initialLocation = urlParams.get('konum') || urlParams.get('location') || "";
   const initialDate = urlParams.get('tarih') || urlParams.get('date') || "";
@@ -109,6 +115,44 @@ export default function FindMatch() {
       position: "",
     },
   });
+
+  // Mutation for joining a match
+  const joinMatchMutation = useMutation({
+    mutationFn: async (macId: string) => {
+      const response = await apiRequest("POST", `/api/maclar/${macId}/katil`);
+      return response.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Başarılı!",
+        description: data.message || "Maça başarıyla katıldınız!",
+      });
+      // Invalidate caches to reflect the change
+      queryClient.invalidateQueries({ queryKey: ['/api/maclarim'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/maclar'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/matches'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Hata",
+        description: error.message || "Maça katılırken bir hata oluştu.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleJoinMatch = (macId: string) => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Giriş Yapmalısınız",
+        description: "Maça katılmak için önce giriş yapmalısınız.",
+        variant: "destructive",
+      });
+      setNavigationLocation("/giris");
+      return;
+    }
+    joinMatchMutation.mutate(macId);
+  };
 
   useEffect(() => {
     if (initialLocation || initialDate) {
@@ -404,8 +448,10 @@ export default function FindMatch() {
                         className="w-full mt-4" 
                         size="sm"
                         data-testid={`button-join-match-${match.id}`}
+                        onClick={() => handleJoinMatch(match.id)}
+                        disabled={joinMatchMutation.isPending}
                       >
-                        Maça Katıl
+                        {joinMatchMutation.isPending ? "Katılınıyor..." : "Maça Katıl"}
                       </Button>
                     </CardContent>
                   </Card>
@@ -478,8 +524,10 @@ export default function FindMatch() {
                         className="w-full mt-4" 
                         size="sm"
                         data-testid={`button-join-mac-${mac.macId}`}
+                        onClick={() => handleJoinMatch(mac.macId)}
+                        disabled={joinMatchMutation.isPending}
                       >
-                        Maça Katıl
+                        {joinMatchMutation.isPending ? "Katılınıyor..." : "Maça Katıl"}
                       </Button>
                     </CardContent>
                   </Card>
