@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { getAllMatches, saveMatch, getMatchById, addPlayerToMatch, type MacVerisi, type YeniMac } from "./matchStorage";
 import { insertUserSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
 import { z } from "zod";
@@ -215,6 +216,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ message: "Çıkış yapıldı" });
     });
+  });
+
+  app.get("/api/maclar", (req, res) => {
+    try {
+      const { konum, mevki, tarih } = req.query;
+      let matches = getAllMatches();
+
+      if (konum && typeof konum === "string") {
+        matches = matches.filter(m =>
+          m.konum.toLowerCase().includes(konum.toLowerCase())
+        );
+      }
+
+      if (mevki && typeof mevki === "string") {
+        matches = matches.filter(m =>
+          m.gerekliMevkiler.some(
+            pos => pos.toLowerCase() === mevki.toLowerCase()
+          )
+        );
+      }
+
+      if (tarih && typeof tarih === "string") {
+        matches = matches.filter(m =>
+          m.tarihSaat.includes(tarih)
+        );
+      }
+
+      res.json(matches);
+    } catch (error) {
+      console.error("Error fetching maclar:", error);
+      res.status(500).json({ error: "Maçlar alınamadı" });
+    }
+  });
+
+  app.get("/api/maclar/:macId", (req, res) => {
+    try {
+      const match = getMatchById(req.params.macId);
+      if (!match) {
+        return res.status(404).json({ error: "Maç bulunamadı" });
+      }
+      res.json(match);
+    } catch (error) {
+      console.error("Error fetching match:", error);
+      res.status(500).json({ error: "Maç bilgisi alınamadı" });
+    }
+  });
+
+  app.post("/api/maclar", (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
+    }
+
+    try {
+      const { konum, tarihSaat, gerekliMevkiler } = req.body;
+
+      if (!konum || !tarihSaat || !gerekliMevkiler) {
+        return res.status(400).json({ error: "Tüm alanları doldurunuz" });
+      }
+
+      const newMatch = saveMatch({
+        konum,
+        tarihSaat,
+        gerekliMevkiler,
+        organizatorId: req.session.userId,
+      });
+
+      res.status(201).json({
+        message: "Maç ilanı başarıyla oluşturuldu!",
+        mac: newMatch,
+      });
+    } catch (error) {
+      console.error("Create maclar error:", error);
+      res.status(500).json({ error: "Maç ilanı oluşturulamadı" });
+    }
+  });
+
+  app.post("/api/maclar/:macId/katil", (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
+    }
+
+    try {
+      const match = addPlayerToMatch(req.params.macId, req.session.userId);
+      if (!match) {
+        return res.status(404).json({ error: "Maç bulunamadı" });
+      }
+      res.json({
+        message: "Maça başarıyla katıldınız!",
+        mac: match,
+      });
+    } catch (error) {
+      console.error("Join match error:", error);
+      res.status(500).json({ error: "Maça katılınamadı" });
+    }
   });
 
   const httpServer = createServer(app);
