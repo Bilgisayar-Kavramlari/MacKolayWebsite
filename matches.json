@@ -139,5 +139,23 @@
     "katilanOyuncular": [],
     "organizatorId": "02a87386-218f-496d-82f3-0d47cbdee33b",
     "geriBildirimler": []
+  },
+  {
+    "macId": "0eb2678d-e570-46e9-b7f0-a6bb4d02012f",
+    "sahaAdi": "Sarıyer Halısaha",
+    "konum": "Sarıyer, İstanbul",
+    "tarih": "2025-11-27",
+    "saat": "23:00",
+    "oyuncuSayisi": 4,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "Orta Seviye",
+    "fiyat": 90,
+    "gerekliMevkiler": [
+      "kaleci",
+      "orta-saha"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "5ca205a7-6eae-4364-8f1b-6025374b2fd3",
+    "geriBildirimler": []
   }
 ]

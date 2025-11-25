@@ -180,5 +180,18 @@
     "weight": null,
     "age": null,
     "guvenilirlikPuani": 50
+  },
+  {
+    "id": "5ca205a7-6eae-4364-8f1b-6025374b2fd3",
+    "username": "veli1",
+    "password": "$2b$10$tfKib/Vr6RMSmtpRRc1SWOLf8qdkFASC.rsqA0G.qP4fdOchepEli",
+    "fullName": "Veli Yılmaz",
+    "phone": "0555123456",
+    "position": "kaleci",
+    "profilePicture": null,
+    "height": 175,
+    "weight": 70,
+    "age": 25,
+    "guvenilirlikPuani": 50
   }
 ]
