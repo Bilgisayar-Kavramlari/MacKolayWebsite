@@ -25,13 +25,15 @@
     "tarih": "2025-11-25",
     "saat": "20:00",
     "oyuncuSayisi": 1,
-    "mevcutOyuncuSayisi": 1,
+    "mevcutOyuncuSayisi": 2,
     "seviye": "İleri Seviye",
     "fiyat": 60,
     "gerekliMevkiler": [
       "defans"
     ],
-    "katilanOyuncular": [],
+    "katilanOyuncular": [
+      "43bb44df-1d89-4621-9e66-ba7f98528e1f"
+    ],
     "organizatorId": "43bb44df-1d89-4621-9e66-ba7f98528e1f",
     "geriBildirimler": []
   },
@@ -149,14 +151,16 @@
     "tarih": "2025-11-27",
     "saat": "23:00",
     "oyuncuSayisi": 4,
-    "mevcutOyuncuSayisi": 1,
+    "mevcutOyuncuSayisi": 2,
     "seviye": "Orta Seviye",
     "fiyat": 90,
     "gerekliMevkiler": [
       "kaleci",
       "orta-saha"
     ],
-    "katilanOyuncular": [],
+    "katilanOyuncular": [
+      "43bb44df-1d89-4621-9e66-ba7f98528e1f"
+    ],
     "organizatorId": "5ca205a7-6eae-4364-8f1b-6025374b2fd3",
     "geriBildirimler": []
   },
