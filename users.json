@@ -58,5 +58,17 @@
     "height": null,
     "weight": null,
     "age": null
+  },
+  {
+    "id": "0eb68be8-d72b-4d81-b6fe-20b19a2262f7",
+    "username": "test_uXZLtS",
+    "password": "$2b$10$Tg6qE7wzSAvuh9umgBYhlOXQcMssBHpcjxdlSWFzhEawuqsSCnpRy",
+    "fullName": "Test User",
+    "phone": "05551234567",
+    "position": "kaleci",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null
   }
 ]

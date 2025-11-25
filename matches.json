@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "macId": "2d9d0003-a65c-44c5-bd86-20687603b8a6",
+    "sahaAdi": "Test Halı Saha",
+    "konum": "İstanbul, Kadıköy",
+    "tarih": "2025-11-26",
+    "saat": "20:00",
+    "oyuncuSayisi": 14,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "Orta Seviye",
+    "fiyat": 100,
+    "gerekliMevkiler": [
+      "Kaleci"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "0eb68be8-d72b-4d81-b6fe-20b19a2262f7"
+  }
+]
