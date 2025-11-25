@@ -96,6 +96,7 @@ export default function PostMatch() {
         currentPlayers: 1,
         venueId: "custom",
         imageUrl: "/placeholder-match.jpg",
+        neededPositions: data.neededPositions,
       });
       return response.json();
     },

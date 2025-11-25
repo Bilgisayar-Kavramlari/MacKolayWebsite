@@ -39,22 +39,37 @@ const searchSchema = z.object({
   location: z.string().optional(),
   date: z.string().optional(),
   skillLevel: z.string().optional(),
+  position: z.string().optional(),
 });
 
 type SearchForm = z.infer<typeof searchSchema>;
 
 const skillLevelOptions = [
   { value: "all", label: "Tümü" },
-  { value: "beginner", label: "Başlangıç" },
-  { value: "intermediate", label: "Orta" },
-  { value: "advanced", label: "İleri" },
+  { value: "Başlangıç", label: "Başlangıç" },
+  { value: "Orta Seviye", label: "Orta" },
+  { value: "İleri Seviye", label: "İleri" },
 ];
 
+const positionOptions = [
+  { value: "all", label: "Tümü" },
+  { value: "kaleci", label: "Kaleci" },
+  { value: "defans", label: "Defans" },
+  { value: "orta-saha", label: "Orta Saha" },
+  { value: "forvet", label: "Forvet" },
+];
+
+const positionLabels: Record<string, string> = {
+  "kaleci": "Kaleci",
+  "defans": "Defans",
+  "orta-saha": "Orta Saha",
+  "forvet": "Forvet",
+};
+
 const skillLevelLabels: Record<string, string> = {
-  beginner: "Başlangıç",
-  intermediate: "Orta",
-  advanced: "İleri",
-  all: "Tüm Seviyeler",
+  "Başlangıç": "Başlangıç",
+  "Orta Seviye": "Orta",
+  "İleri Seviye": "İleri",
 };
 
 export default function FindMatch() {
@@ -66,6 +81,7 @@ export default function FindMatch() {
       location: "",
       date: "",
       skillLevel: "",
+      position: "",
     },
   });
 
@@ -74,12 +90,13 @@ export default function FindMatch() {
     if (filters.location) params.set('location', filters.location);
     if (filters.date) params.set('date', filters.date);
     if (filters.skillLevel) params.set('skillLevel', filters.skillLevel);
+    if (filters.position) params.set('position', filters.position);
     const queryString = params.toString();
     return queryString ? `/api/matches?${queryString}` : '/api/matches';
   };
 
   const { data: matches, isLoading } = useQuery<Match[]>({
-    queryKey: ['/api/matches', filters.location, filters.date, filters.skillLevel],
+    queryKey: ['/api/matches', filters.location, filters.date, filters.skillLevel, filters.position],
     queryFn: async () => {
       const response = await fetch(buildQueryUrl());
       if (!response.ok) throw new Error('Failed to fetch matches');
@@ -92,6 +109,7 @@ export default function FindMatch() {
       location: data.location || undefined,
       date: data.date || undefined,
       skillLevel: data.skillLevel === "all" ? undefined : data.skillLevel,
+      position: data.position === "all" ? undefined : data.position,
     });
   };
 
@@ -126,7 +144,7 @@ export default function FindMatch() {
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <FormField
                       control={form.control}
                       name="location"
@@ -153,7 +171,7 @@ export default function FindMatch() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Tarih/Saat</FormLabel>
+                          <FormLabel>Tarih</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -184,6 +202,31 @@ export default function FindMatch() {
                             </FormControl>
                             <SelectContent>
                               {skillLevelOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="position"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Aranan Mevki</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger data-testid="select-position">
+                                <Users className="mr-2 h-4 w-4 text-muted-foreground" />
+                                <SelectValue placeholder="Mevki seçin" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {positionOptions.map((option) => (
                                 <SelectItem key={option.value} value={option.value}>
                                   {option.label}
                                 </SelectItem>
@@ -282,6 +325,19 @@ export default function FindMatch() {
                           </span>
                         </div>
                       </div>
+
+                      {match.neededPositions && match.neededPositions.length > 0 && (
+                        <div className="mt-3 pt-3 border-t">
+                          <p className="text-xs text-muted-foreground mb-2">Aranan Mevkiler:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {match.neededPositions.map((pos) => (
+                              <Badge key={pos} variant="outline" className="text-xs">
+                                {positionLabels[pos] || pos}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
                       <div className="flex items-center justify-between mt-3 pt-3 border-t">
                         <span className="text-lg font-bold text-primary">

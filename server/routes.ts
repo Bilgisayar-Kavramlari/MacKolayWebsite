@@ -80,7 +80,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/matches", async (req, res) => {
     try {
-      const { venueName, location, date, time, maxPlayers, skillLevel, price, currentPlayers, venueId, imageUrl } = req.body;
+      const { venueName, location, date, time, maxPlayers, skillLevel, price, currentPlayers, venueId, imageUrl, neededPositions } = req.body;
       
       if (!venueName || !location || !date || !time || !maxPlayers || !skillLevel || price === undefined) {
         return res.status(400).json({ error: "Tüm alanları doldurunuz" });
@@ -97,6 +97,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         skillLevel,
         price: parseInt(price),
         imageUrl: imageUrl || "/placeholder-match.jpg",
+        neededPositions: neededPositions || [],
       });
 
       res.status(201).json({

@@ -212,7 +212,7 @@ export class MemStorage implements IStorage {
 
     matches.forEach(match => {
       const id = randomUUID();
-      this.matches.set(id, { ...match, id });
+      this.matches.set(id, { ...match, id, neededPositions: match.neededPositions || null });
     });
 
     const testimonials: InsertTestimonial[] = [
@@ -309,7 +309,11 @@ export class MemStorage implements IStorage {
 
   async createMatch(insertMatch: InsertMatch): Promise<Match> {
     const id = randomUUID();
-    const match: Match = { ...insertMatch, id };
+    const match: Match = { 
+      ...insertMatch, 
+      id,
+      neededPositions: insertMatch.neededPositions || null,
+    };
     this.matches.set(id, match);
     return match;
   }
