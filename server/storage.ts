@@ -9,6 +9,33 @@ import {
   type InsertTestimonial
 } from "@shared/schema";
 import { randomUUID } from "crypto";
+import fs from "fs";
+import path from "path";
+
+const USERS_FILE = path.join(process.cwd(), "users.json");
+
+function readUsersFromFile(): User[] {
+  try {
+    if (!fs.existsSync(USERS_FILE)) {
+      fs.writeFileSync(USERS_FILE, "[]", "utf-8");
+      return [];
+    }
+    const data = fs.readFileSync(USERS_FILE, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading users.json:", error);
+    return [];
+  }
+}
+
+function writeUsersToFile(users: User[]): void {
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing to users.json:", error);
+    throw new Error("Kullanıcı kaydedilemedi");
+  }
+}
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -52,7 +79,6 @@ export class MemStorage implements IStorage {
 
     const venues: InsertVenue[] = [
       {
-        venueId: "1",
         name: "Arena Spor Tesisleri",
         location: "Kadıköy, İstanbul",
         imageUrl: venueImages[0],
@@ -60,7 +86,6 @@ export class MemStorage implements IStorage {
         available: 8,
       },
       {
-        venueId: "2",
         name: "Şampiyon Halı Saha",
         location: "Beşiktaş, İstanbul",
         imageUrl: venueImages[1],
@@ -68,7 +93,6 @@ export class MemStorage implements IStorage {
         available: 5,
       },
       {
-        venueId: "3",
         name: "Yıldız Sports Complex",
         location: "Çankaya, Ankara",
         imageUrl: venueImages[2],
@@ -76,7 +100,6 @@ export class MemStorage implements IStorage {
         available: 12,
       },
       {
-        venueId: "4",
         name: "Futbol Park",
         location: "Karşıyaka, İzmir",
         imageUrl: venueImages[3],
@@ -84,7 +107,6 @@ export class MemStorage implements IStorage {
         available: 6,
       },
       {
-        venueId: "5",
         name: "Stadium Halı Saha",
         location: "Çankaya, Ankara",
         imageUrl: venueImages[4],
@@ -92,7 +114,6 @@ export class MemStorage implements IStorage {
         available: 10,
       },
       {
-        venueId: "6",
         name: "Pro Football Center",
         location: "Bornova, İzmir",
         imageUrl: venueImages[5],
@@ -222,19 +243,32 @@ export class MemStorage implements IStorage {
   }
 
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const users = readUsersFromFile();
+    return users.find(user => user.id === id);
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const users = readUsersFromFile();
+    return users.find(user => user.username === username);
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    const users = readUsersFromFile();
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const user: User = { 
+      id,
+      username: insertUser.username,
+      password: insertUser.password,
+      fullName: insertUser.fullName,
+      phone: insertUser.phone,
+      position: insertUser.position,
+      profilePicture: insertUser.profilePicture ?? null,
+      height: insertUser.height ?? null,
+      weight: insertUser.weight ?? null,
+      age: insertUser.age ?? null,
+    };
+    users.push(user);
+    writeUsersToFile(users);
     return user;
   }
 

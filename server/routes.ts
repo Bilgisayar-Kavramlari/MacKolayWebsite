@@ -1,6 +1,17 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertUserSchema } from "@shared/schema";
+import bcrypt from "bcrypt";
+import { z } from "zod";
+
+const registerSchema = insertUserSchema.extend({
+  username: z.string().min(3, "Kullanıcı adı en az 3 karakter olmalıdır"),
+  password: z.string().min(6, "Şifre en az 6 karakter olmalıdır"),
+  fullName: z.string().min(2, "Ad soyad gereklidir"),
+  phone: z.string().min(10, "Geçerli bir telefon numarası giriniz"),
+  position: z.string().min(1, "Mevki seçiniz"),
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/matches", async (req, res) => {
@@ -58,6 +69,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(testimonials);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch testimonials" });
+    }
+  });
+
+  app.post("/api/kayit", async (req, res) => {
+    try {
+      const validationResult = registerSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        const errorMessage = validationResult.error.errors[0]?.message || "Geçersiz form verisi";
+        return res.status(400).json({ error: errorMessage });
+      }
+
+      const { username, password, fullName, phone, position, height, weight, age, profilePicture } = validationResult.data;
+
+      const existingUser = await storage.getUserByUsername(username);
+      if (existingUser) {
+        return res.status(400).json({ error: "Bu kullanıcı adı zaten kullanılıyor" });
+      }
+
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      const newUser = await storage.createUser({
+        username,
+        password: hashedPassword,
+        fullName,
+        phone,
+        position,
+        height: height || undefined,
+        weight: weight || undefined,
+        age: age || undefined,
+        profilePicture: profilePicture || undefined,
+      });
+
+      const { password: _, ...userWithoutPassword } = newUser;
+      
+      res.status(201).json({
+        message: "Kayıt başarılı! Giriş yapabilirsiniz.",
+        user: userWithoutPassword,
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      res.status(500).json({ error: "Kayıt işlemi sırasında bir hata oluştu" });
     }
   });
 
