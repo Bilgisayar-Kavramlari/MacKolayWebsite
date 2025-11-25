@@ -77,6 +77,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/matches", async (req, res) => {
+    try {
+      const { venueName, location, date, time, maxPlayers, skillLevel, price, currentPlayers, venueId, imageUrl } = req.body;
+      
+      if (!venueName || !location || !date || !time || !maxPlayers || !skillLevel || price === undefined) {
+        return res.status(400).json({ error: "Tüm alanları doldurunuz" });
+      }
+
+      const newMatch = await storage.createMatch({
+        venueId: venueId || "custom",
+        venueName,
+        location,
+        date,
+        time,
+        currentPlayers: currentPlayers || 1,
+        maxPlayers: parseInt(maxPlayers),
+        skillLevel,
+        price: parseInt(price),
+        imageUrl: imageUrl || "/placeholder-match.jpg",
+      });
+
+      res.status(201).json({
+        message: "Maç ilanı başarıyla oluşturuldu!",
+        match: newMatch,
+      });
+    } catch (error) {
+      console.error("Create match error:", error);
+      res.status(500).json({ error: "Maç ilanı oluşturulamadı" });
+    }
+  });
+
   app.post("/api/kayit", async (req, res) => {
     try {
       const validationResult = registerSchema.safeParse(req.body);

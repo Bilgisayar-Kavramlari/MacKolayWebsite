@@ -7,6 +7,8 @@ import Home from "@/pages/home";
 import Register from "@/pages/register";
 import Login from "@/pages/login";
 import Profile from "@/pages/profile";
+import FindMatch from "@/pages/find-match";
+import PostMatch from "@/pages/post-match";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +18,8 @@ function Router() {
       <Route path="/kayit" component={Register} />
       <Route path="/giris" component={Login} />
       <Route path="/profil" component={Profile} />
+      <Route path="/mac-bul" component={FindMatch} />
+      <Route path="/mac-ilan-ver" component={PostMatch} />
       <Route component={NotFound} />
     </Switch>
   );
