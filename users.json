@@ -9,7 +9,8 @@
     "profilePicture": null,
     "height": null,
     "weight": null,
-    "age": null
+    "age": null,
+    "guvenilirlikPuani": 100
   },
   {
     "id": "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c",
@@ -21,7 +22,8 @@
     "profilePicture": null,
     "height": 190,
     "weight": 120,
-    "age": 21
+    "age": 21,
+    "guvenilirlikPuani": 100
   },
   {
     "id": "86e61102-9a49-41bd-a266-eb0bada9aa1f",
@@ -33,7 +35,8 @@
     "profilePicture": null,
     "height": null,
     "weight": null,
-    "age": null
+    "age": null,
+    "guvenilirlikPuani": 100
   },
   {
     "id": "f31a9ff6-4d83-4ae1-aa9f-d768d99cfc6f",
@@ -45,7 +48,8 @@
     "profilePicture": null,
     "height": 170,
     "weight": 60,
-    "age": 22
+    "age": 22,
+    "guvenilirlikPuani": 100
   },
   {
     "id": "9c33e3ee-e093-48e2-b80b-419d5c4b4954",
@@ -57,7 +61,8 @@
     "profilePicture": null,
     "height": null,
     "weight": null,
-    "age": null
+    "age": null,
+    "guvenilirlikPuani": 100
   },
   {
     "id": "0eb68be8-d72b-4d81-b6fe-20b19a2262f7",
@@ -69,6 +74,7 @@
     "profilePicture": null,
     "height": null,
     "weight": null,
-    "age": null
+    "age": null,
+    "guvenilirlikPuani": 100
   }
 ]

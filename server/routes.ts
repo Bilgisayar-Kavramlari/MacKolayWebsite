@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
-import { getAllMatches, saveMatch, getMatchById, addPlayerToMatch, type MacVerisi, type YeniMac } from "./matchStorage";
+import { storage, updateReliabilityScore } from "./storage";
+import { getAllMatches, saveMatch, getMatchById, addPlayerToMatch, removePlayerFromMatch, type MacVerisi, type YeniMac } from "./matchStorage";
 import { insertUserSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
 import { z } from "zod";
@@ -323,6 +323,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Join match error:", error);
       res.status(500).json({ error: "Maça katılınamadı" });
+    }
+  });
+
+  // Maçtan ayrılma / iptal etme - Güvenilirlik puanı düşürme örneği
+  app.post("/api/maclar/:macId/ayril", (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
+    }
+
+    try {
+      const match = removePlayerFromMatch(req.params.macId, req.session.userId);
+      if (!match) {
+        return res.status(404).json({ error: "Maç bulunamadı" });
+      }
+
+      // Son dakika iptal durumunda güvenilirlik puanını düşür (-10 puan)
+      // Örnek: Maç tarihi yakınsa daha fazla puan düşürülebilir
+      const updatedUser = updateReliabilityScore(req.session.userId, -10);
+      
+      res.json({
+        message: "Maçtan ayrıldınız. Son dakika iptali nedeniyle güvenilirlik puanınız düşürüldü.",
+        mac: match,
+        yeniGuvenilirlikPuani: updatedUser?.guvenilirlikPuani ?? null,
+      });
+    } catch (error) {
+      console.error("Leave match error:", error);
+      res.status(500).json({ error: "Maçtan ayrılınamadı" });
     }
   });
 

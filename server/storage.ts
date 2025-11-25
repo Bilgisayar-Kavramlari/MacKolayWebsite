@@ -37,6 +37,40 @@ function writeUsersToFile(users: User[]): void {
   }
 }
 
+/**
+ * Kullanıcının güvenilirlik puanını günceller
+ * @param userId - Kullanıcı ID'si
+ * @param changeAmount - Puan değişikliği (pozitif veya negatif)
+ * @returns Güncellenmiş kullanıcı objesi veya null (kullanıcı bulunamazsa)
+ * 
+ * Örnek Kullanımlar:
+ * - Son dakika iptal: updateReliabilityScore(userId, -10)
+ * - Maça katılım: updateReliabilityScore(userId, +5)
+ * - Organizatör olarak başarılı maç: updateReliabilityScore(userId, +10)
+ */
+export function updateReliabilityScore(userId: string, changeAmount: number): User | null {
+  const users = readUsersFromFile();
+  const userIndex = users.findIndex(user => user.id === userId);
+  
+  if (userIndex === -1) {
+    console.error(`Kullanıcı bulunamadı: ${userId}`);
+    return null;
+  }
+  
+  const currentScore = users[userIndex].guvenilirlikPuani ?? 100;
+  let newScore = currentScore + changeAmount;
+  
+  // Puanı 0-100 arasında tut
+  newScore = Math.max(0, Math.min(100, newScore));
+  
+  users[userIndex].guvenilirlikPuani = newScore;
+  writeUsersToFile(users);
+  
+  console.log(`Güvenilirlik puanı güncellendi: ${users[userIndex].username} (${currentScore} -> ${newScore})`);
+  
+  return users[userIndex];
+}
+
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -272,6 +306,7 @@ export class MemStorage implements IStorage {
       height: insertUser.height ?? null,
       weight: insertUser.weight ?? null,
       age: insertUser.age ?? null,
+      guvenilirlikPuani: 100,
     };
     users.push(user);
     writeUsersToFile(users);

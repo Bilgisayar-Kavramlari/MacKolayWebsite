@@ -14,6 +14,7 @@ export const users = pgTable("users", {
   weight: integer("weight"),
   age: integer("age"),
   position: text("position").notNull(),
+  guvenilirlikPuani: integer("guvenilirlik_puani").default(100),
 });
 
 export const matches = pgTable("matches", {
