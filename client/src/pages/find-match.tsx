@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
+import { useSearch } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -88,17 +89,35 @@ const skillLevelLabels: Record<string, string> = {
 };
 
 export default function FindMatch() {
-  const [filters, setFilters] = useState<SearchForm>({});
+  const searchString = useSearch();
+  const urlParams = new URLSearchParams(searchString);
+  
+  const initialLocation = urlParams.get('konum') || urlParams.get('location') || "";
+  const initialDate = urlParams.get('tarih') || urlParams.get('date') || "";
+  
+  const [filters, setFilters] = useState<SearchForm>({
+    location: initialLocation || undefined,
+    date: initialDate || undefined,
+  });
 
   const form = useForm<SearchForm>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      location: "",
-      date: "",
+      location: initialLocation,
+      date: initialDate,
       skillLevel: "",
       position: "",
     },
   });
+
+  useEffect(() => {
+    if (initialLocation || initialDate) {
+      setFilters({
+        location: initialLocation || undefined,
+        date: initialDate || undefined,
+      });
+    }
+  }, []);
 
   const buildQueryUrl = () => {
     const params = new URLSearchParams();

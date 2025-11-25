@@ -115,5 +115,31 @@
     "weight": null,
     "age": null,
     "guvenilirlikPuani": 50
+  },
+  {
+    "id": "33f536ed-1094-47d4-9e14-58ccebf63206",
+    "username": "baci1",
+    "password": "$2b$10$efi1ZRYdD83VatN8UcEGIOQnBleZBGUJfS0EwNZdGVaKGa04IAeBW",
+    "fullName": "Eren Bağ",
+    "phone": "0555123456",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": 250,
+    "weight": 35,
+    "age": 26,
+    "guvenilirlikPuani": 50
+  },
+  {
+    "id": "cc23f6cb-8521-4370-bb85-b31feac2a43e",
+    "username": "test_sync_uBx2HC",
+    "password": "$2b$10$yZVLkBpiD2ZNbWRerueL0uZkyyJgPH9H5HK6h6sOFFpN1QtI4lRRK",
+    "fullName": "Test Sync Kullanici",
+    "phone": "05551234567",
+    "position": "defans",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 50
   }
 ]

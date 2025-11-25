@@ -50,5 +50,42 @@
     "katilanOyuncular": [],
     "organizatorId": "08544095-295e-48df-918c-cd14c1daf692",
     "geriBildirimler": []
+  },
+  {
+    "macId": "857493b7-f975-49ae-8f1a-b00d3580e284",
+    "sahaAdi": "Yalıköy Saha",
+    "konum": "Beykoz",
+    "tarih": "2025-11-25",
+    "saat": "21:00",
+    "oyuncuSayisi": 4,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "Başlangıç",
+    "fiyat": 120,
+    "gerekliMevkiler": [
+      "forvet",
+      "orta-saha",
+      "defans"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "33f536ed-1094-47d4-9e14-58ccebf63206",
+    "geriBildirimler": []
+  },
+  {
+    "macId": "7e15605e-2a48-471d-8951-01caec1d1479",
+    "sahaAdi": "Sync Test Sahası -d3P",
+    "konum": "Beşiktaş, İstanbul",
+    "tarih": "2025-11-26",
+    "saat": "20:00",
+    "oyuncuSayisi": 4,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "Başlangıç",
+    "fiyat": 35,
+    "gerekliMevkiler": [
+      "kaleci",
+      "forvet"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "cc23f6cb-8521-4370-bb85-b31feac2a43e",
+    "geriBildirimler": []
   }
 ]

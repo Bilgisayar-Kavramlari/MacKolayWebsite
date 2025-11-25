@@ -1,9 +1,27 @@
+import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Calendar } from "lucide-react";
 import heroImage from "@assets/generated_images/hero_background_football_action.png";
 
 export function Hero() {
+  const [, setLocation] = useLocation();
+  const [konum, setKonum] = useState("");
+  const [tarih, setTarih] = useState("");
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (konum.trim()) {
+      params.set('konum', konum.trim());
+    }
+    if (tarih) {
+      params.set('tarih', tarih);
+    }
+    const queryString = params.toString();
+    setLocation(queryString ? `/mac-bul?${queryString}` : '/mac-bul');
+  };
+
   return (
     <div className="relative h-[80vh] w-full overflow-hidden">
       <div 
@@ -28,7 +46,9 @@ export function Hero() {
                 <Input 
                   placeholder="Şehir veya semt" 
                   className="border-0 p-0 focus-visible:ring-0"
-                  data-testid="input-location"
+                  value={konum}
+                  onChange={(e) => setKonum(e.target.value)}
+                  data-testid="input-hero-location"
                 />
               </div>
               <div className="flex items-center gap-2 rounded-md border bg-background px-4 py-3">
@@ -36,10 +56,17 @@ export function Hero() {
                 <Input 
                   type="date"
                   className="border-0 p-0 focus-visible:ring-0"
-                  data-testid="input-date"
+                  value={tarih}
+                  onChange={(e) => setTarih(e.target.value)}
+                  data-testid="input-hero-date"
                 />
               </div>
-              <Button size="lg" className="w-full" data-testid="button-search">
+              <Button 
+                size="lg" 
+                className="w-full" 
+                onClick={handleSearch}
+                data-testid="button-hero-search"
+              >
                 <Search className="mr-2 h-5 w-5" />
                 Maç Ara
               </Button>

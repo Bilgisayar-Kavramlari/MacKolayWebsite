@@ -1,0 +1,15 @@
+Implement the following comprehensive updates across the application:
+
+1.  **Critical Match & Profile Data Synchronization (Includes Item 5 & 6 from last list, and Item 3 from previous):**
+    * **Maçlarım Synchronization:** Implement the logic to ensure that any match created (`POST /mac-ilan-ver`) or joined by the authenticated user is immediately and correctly associated with their ID. The authenticated endpoint (`GET /api/maclarim`) must successfully return all matches where the user is either the creator or a participant.
+    * **Homepage Search Integration:** Update the Home page search form to redirect the user to the `/mac-bul` route upon submission. The search parameters (`konum`, `tarih/saat`) must be passed as **URL query parameters**, and the `/mac-bul` component must read these to automatically execute the initial filtered search.
+    * **Data Display:** Ensure the `/profil` page fetches and displays real user data (e.g., username, current `guvenilirlik_puani`) instead of static placeholders.
+
+2.  **Core Bug Fixes & User Experience Enhancements (Includes Item 1 & 2 from last list):**
+    * **Match Player Count Fix:** Resolve the bug where the user input for the **number of players needed** (`ihtiyac_duyulan_oyuncu_sayisi`) is incorrectly displayed as the **total player count** in the match listing. The display must accurately show the number of open/needed spots.
+    * **Navigation UX Fix:** Fix the delay issue by improving frontend authentication state management. Navigation items dependent on login status (e.g., "Maç Oluştur," profile links) must update **instantly** upon successful `POST /giris` response, without requiring a page refresh.
+
+3.  **Final Feature Integration & Deployment Preparation (Includes Item 3 & 4 from previous list):**
+    * **"Maçlarım" Tab & Navigation:** Complete the integration of the "Maçlarım" link in the navigation bar (visible only when logged in) and the corresponding component (`/maclarim`) and its basic backend endpoint (`GET /api/maclarim`).
+    * **Default Score:** Update the registration logic (`POST /kayit`) to set the **`guvenilirlik_puani`** for all new users to a default value of **50**.
+    * **Final Build:** Ensure all code is clean, compile the final application (`npm run build`), and verify the server starts without errors (`npm start`).
