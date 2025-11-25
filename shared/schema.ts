@@ -7,6 +7,13 @@ export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  fullName: text("full_name").notNull(),
+  phone: text("phone").notNull(),
+  profilePicture: text("profile_picture"),
+  height: integer("height"),
+  weight: integer("weight"),
+  age: integer("age"),
+  position: text("position").notNull(),
 });
 
 export const matches = pgTable("matches", {

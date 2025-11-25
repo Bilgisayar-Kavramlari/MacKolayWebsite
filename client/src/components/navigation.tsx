@@ -58,12 +58,16 @@ export function Navigation() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-          <Button variant="ghost" data-testid="button-login">
-            Giriş Yap
-          </Button>
-          <Button data-testid="button-register">
-            Kayıt Ol
-          </Button>
+          <Link href="/giris">
+            <Button variant="ghost" data-testid="button-login">
+              Giriş Yap
+            </Button>
+          </Link>
+          <Link href="/kayit">
+            <Button data-testid="button-register">
+              Kayıt Ol
+            </Button>
+          </Link>
         </div>
       </nav>
 
@@ -92,12 +96,16 @@ export function Navigation() {
               Hakkımızda
             </Link>
             <div className="flex flex-col gap-2 pt-4">
-              <Button variant="ghost" className="w-full" data-testid="button-mobile-login">
-                Giriş Yap
-              </Button>
-              <Button className="w-full" data-testid="button-mobile-register">
-                Kayıt Ol
-              </Button>
+              <Link href="/giris">
+                <Button variant="ghost" className="w-full" data-testid="button-mobile-login">
+                  Giriş Yap
+                </Button>
+              </Link>
+              <Link href="/kayit">
+                <Button className="w-full" data-testid="button-mobile-register">
+                  Kayıt Ol
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
