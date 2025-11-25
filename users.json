@@ -22,5 +22,17 @@
     "height": 190,
     "weight": 120,
     "age": 21
+  },
+  {
+    "id": "86e61102-9a49-41bd-a266-eb0bada9aa1f",
+    "username": "login_test_7RmcGW",
+    "password": "$2b$10$56QgsxNtCkWZg8GKGrCyGuZYmj.Qe3AJ5iXXJzrjpX5b5lZYaHP3S",
+    "fullName": "Test Kullanıcı",
+    "phone": "05551234567",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null
   }
 ]
