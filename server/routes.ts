@@ -53,7 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const matches = await storage.getMatches(filters);
       res.json(matches);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch matches" });
+      res.status(500).json({ error: "Maçlar yüklenemedi" });
     }
   });
 
@@ -61,11 +61,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const match = await storage.getMatch(req.params.id);
       if (!match) {
-        return res.status(404).json({ error: "Match not found" });
+        return res.status(404).json({ error: "Maç bulunamadı" });
       }
       res.json(match);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch match" });
+      res.status(500).json({ error: "Maç bilgisi yüklenemedi" });
     }
   });
 
@@ -74,7 +74,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const venues = await storage.getVenues();
       res.json(venues);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch venues" });
+      res.status(500).json({ error: "Sahalar yüklenemedi" });
     }
   });
 
@@ -82,11 +82,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const venue = await storage.getVenue(req.params.id);
       if (!venue) {
-        return res.status(404).json({ error: "Venue not found" });
+        return res.status(404).json({ error: "Saha bulunamadı" });
       }
       res.json(venue);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch venue" });
+      res.status(500).json({ error: "Saha bilgisi yüklenemedi" });
     }
   });
 
@@ -95,7 +95,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const testimonials = await storage.getTestimonials();
       res.json(testimonials);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch testimonials" });
+      res.status(500).json({ error: "Yorumlar yüklenemedi" });
     }
   });
 

@@ -114,7 +114,7 @@ export default function FindMatch() {
     queryKey: ['/api/matches', filters.location, filters.date, filters.skillLevel, filters.position],
     queryFn: async () => {
       const response = await fetch(buildQueryUrl());
-      if (!response.ok) throw new Error('Failed to fetch matches');
+      if (!response.ok) throw new Error('Maçlar yüklenemedi');
       return response.json();
     },
   });
@@ -132,7 +132,7 @@ export default function FindMatch() {
     queryKey: ['/api/maclar', filters.location, filters.date, filters.position],
     queryFn: async () => {
       const response = await fetch(buildMaclarQueryUrl());
-      if (!response.ok) throw new Error('Failed to fetch maclar');
+      if (!response.ok) throw new Error('Kullanıcı maçları yüklenemedi');
       return response.json();
     },
   });

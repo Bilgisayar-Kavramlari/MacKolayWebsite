@@ -76,5 +76,18 @@
     "weight": null,
     "age": null,
     "guvenilirlikPuani": 100
+  },
+  {
+    "id": "26cf2034-3e23-43c2-8b83-7b6dc5aec669",
+    "username": "test_final_rni-5V",
+    "password": "$2b$10$1SiaEvXBHrLNEs6v8zi2UuACpgIyyFAe/YekI4SgsmXK2sGsawpua",
+    "fullName": "Test Final User",
+    "phone": "05551234567",
+    "position": "kaleci",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 100
   }
 ]
