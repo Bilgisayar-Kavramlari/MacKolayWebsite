@@ -49,16 +49,23 @@ export default function Login() {
       const response = await apiRequest("POST", "/api/giris", data);
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.user) {
         setUser(data.user);
       }
-      queryClient.invalidateQueries({ queryKey: ['/api/auth/durum'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/profil'] });
+      
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['/api/auth/durum'] }),
+        queryClient.invalidateQueries({ queryKey: ['/api/profil'] }),
+      ]);
+      
+      await queryClient.refetchQueries({ queryKey: ['/api/auth/durum'] });
+      
       toast({
         title: "Başarılı",
         description: data.message || "Giriş başarılı!",
       });
+      
       setLocation("/profil");
     },
     onError: async (error: any) => {

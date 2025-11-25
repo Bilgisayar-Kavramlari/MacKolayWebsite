@@ -28,8 +28,13 @@ function isAuthenticated(req: any, res: any, next: any) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth status check endpoint
+  // Auth status check endpoint - no cache to ensure fresh auth state
   app.get("/api/auth/durum", (req, res) => {
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
     if (req.session && req.session.userId) {
       res.json({ 
         authenticated: true, 
@@ -211,6 +216,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/profil", async (req, res) => {
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+    
     if (!req.session.userId) {
       return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
     }
