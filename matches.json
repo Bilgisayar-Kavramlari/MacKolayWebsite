@@ -81,14 +81,16 @@
     "tarih": "2025-11-26",
     "saat": "20:00",
     "oyuncuSayisi": 4,
-    "mevcutOyuncuSayisi": 1,
+    "mevcutOyuncuSayisi": 2,
     "seviye": "Başlangıç",
     "fiyat": 35,
     "gerekliMevkiler": [
       "kaleci",
       "forvet"
     ],
-    "katilanOyuncular": [],
+    "katilanOyuncular": [
+      "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c"
+    ],
     "organizatorId": "cc23f6cb-8521-4370-bb85-b31feac2a43e",
     "geriBildirimler": []
   },
@@ -171,14 +173,16 @@
     "tarih": "2025-12-31",
     "saat": "19:00",
     "oyuncuSayisi": 3,
-    "mevcutOyuncuSayisi": 1,
+    "mevcutOyuncuSayisi": 2,
     "seviye": "İleri Seviye",
     "fiyat": 100,
     "gerekliMevkiler": [
       "kaleci",
       "orta-saha"
     ],
-    "katilanOyuncular": [],
+    "katilanOyuncular": [
+      "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c"
+    ],
     "organizatorId": "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c",
     "geriBildirimler": []
   }
