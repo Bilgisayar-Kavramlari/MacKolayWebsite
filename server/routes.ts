@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage, updateReliabilityScore } from "./storage";
-import { getAllMatches, saveMatch, getMatchById, addPlayerToMatch, removePlayerFromMatch, type MacVerisi, type YeniMac } from "./matchStorage";
+import { getAllMatches, saveMatch, getMatchById, addPlayerToMatch, removePlayerFromMatch, addFeedbackToMatch, type MacVerisi, type YeniMac } from "./matchStorage";
 import { insertUserSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
 import { z } from "zod";
@@ -350,6 +350,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Leave match error:", error);
       res.status(500).json({ error: "Maçtan ayrılınamadı" });
+    }
+  });
+
+  // Maça geri bildirim gönderme
+  app.post("/api/maclar/:macId/geri-bildirim", (req, res) => {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: "Geri bildirim göndermek için oturum açmanız gerekiyor" });
+    }
+
+    try {
+      const { yorum, oylama } = req.body;
+
+      // Validation
+      if (!yorum || yorum.trim().length === 0) {
+        return res.status(400).json({ error: "Yorum alanı boş bırakılamaz" });
+      }
+
+      if (oylama === undefined || oylama < 1 || oylama > 5) {
+        return res.status(400).json({ error: "Oylama 1-5 arasında bir değer olmalıdır" });
+      }
+
+      const updatedMatch = addFeedbackToMatch(
+        req.params.macId,
+        req.session.userId,
+        yorum.trim(),
+        parseInt(oylama)
+      );
+
+      if (!updatedMatch) {
+        return res.status(404).json({ error: "Maç bulunamadı" });
+      }
+
+      res.status(201).json({
+        message: "Geri bildiriminiz başarıyla gönderildi!",
+        mac: updatedMatch,
+      });
+    } catch (error) {
+      console.error("Feedback error:", error);
+      res.status(500).json({ error: "Geri bildirim gönderilemedi" });
     }
   });
 
