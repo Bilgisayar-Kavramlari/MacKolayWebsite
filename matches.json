@@ -87,5 +87,23 @@
     "katilanOyuncular": [],
     "organizatorId": "cc23f6cb-8521-4370-bb85-b31feac2a43e",
     "geriBildirimler": []
+  },
+  {
+    "macId": "1ede56b5-c8c9-4fbe-a48f-c26b42992077",
+    "sahaAdi": "beykoz spor tesisi",
+    "konum": "beykoz",
+    "tarih": "2025-11-25",
+    "saat": "22:00",
+    "oyuncuSayisi": 5,
+    "mevcutOyuncuSayisi": 1,
+    "seviye": "İleri Seviye",
+    "fiyat": 60,
+    "gerekliMevkiler": [
+      "kaleci",
+      "orta-saha"
+    ],
+    "katilanOyuncular": [],
+    "organizatorId": "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c",
+    "geriBildirimler": []
   }
 ]
