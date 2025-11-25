@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useAuth } from "@/lib/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,10 +112,7 @@ const placeholderPastMatches = [
 export default function Profile() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-
-  const { data: user, isLoading, error } = useQuery<UserWithScore>({
-    queryKey: ['/api/profil'],
-  });
+  const { user, isLoading, isAuthenticated, clearUser } = useAuth();
 
   const reliabilityScore = user?.guvenilirlikPuani ?? 100;
 
@@ -124,7 +122,9 @@ export default function Profile() {
       return response.json();
     },
     onSuccess: () => {
+      clearUser();
       queryClient.invalidateQueries({ queryKey: ['/api/profil'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/auth/durum'] });
       toast({
         title: "Çıkış Yapıldı",
         description: "Başarıyla çıkış yaptınız.",
@@ -141,10 +141,10 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (error) {
+    if (!isLoading && !isAuthenticated) {
       setLocation("/giris");
     }
-  }, [error, setLocation]);
+  }, [isLoading, isAuthenticated, setLocation]);
 
   if (isLoading) {
     return (

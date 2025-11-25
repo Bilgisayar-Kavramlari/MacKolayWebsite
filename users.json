@@ -141,5 +141,31 @@
     "weight": null,
     "age": null,
     "guvenilirlikPuani": 50
+  },
+  {
+    "id": "02a07ddf-d741-4075-9580-a352282df195",
+    "username": "test_persist_fKlPta",
+    "password": "$2b$10$hOeuzsXdO3qBAyWjanNkoO2O9MB8Gq.aZB1mu/pW.0aBTX7gxQ6je",
+    "fullName": "Persist Test User",
+    "phone": "05559876543",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 50
+  },
+  {
+    "id": "02a87386-218f-496d-82f3-0d47cbdee33b",
+    "username": "sec_test_BjHJaY",
+    "password": "$2b$10$4IdzrHBlUqQWzaIttb7Xdea15LWtk53GSznynVx3YLbAtM17GMy8i",
+    "fullName": "Security Test User",
+    "phone": "05551112233",
+    "position": "kaleci",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null,
+    "guvenilirlikPuani": 50
   }
 ]

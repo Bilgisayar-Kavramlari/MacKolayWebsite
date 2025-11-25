@@ -1,0 +1,16 @@
+Implement the following two critical fixes to ensure user data persistence and essential match information display.
+
+1.  **Bug Fix: Post-Login Data Persistence (Successful Login but Blank Profile):**
+    * **Backend Check (`POST /giris`):** Ensure that upon successful authentication, the server not only sets the session (`req.session.userId = user.id`) but also includes the **necessary user profile data** (e.g., username, full name, reliability score) in the **JSON response** sent back to the frontend.
+    * **Frontend Check (`Login.tsx`):** After receiving the successful `200 OK` response, the frontend must immediately **read and store the received user data** (e.g., in a React Context, Redux store, or local state) **before** redirecting to `/profil`.
+    * **Profile/Navigation Rendering:** The main layout and the `Profile.tsx` component must check this client-side state/storage first to render the user's information **instantly**, preventing a blank profile screen or delayed navigation bar updates.
+
+2.  **New Feature Fix: Display Organizer Contact Information:**
+    * **Backend Logic:** Review the endpoint that serves the match details (`GET /matches/:matchId` or the main listing endpoint). Implement logic to fetch the **phone number** of the match organizer (`match_organizatoru_ID`) from the `users.json` file.
+    * **Conditional Data Inclusion:** Include the organizer's phone number (`telefon_numarasi`) in the match details API response **only if** the authenticated user has successfully **joined** the match.
+    * **Frontend Display:** Update the match detail component (`/mac-bul` results or a dedicated detail page). When rendering the details of a match the user has joined, display the organizer's phone number with a clear **Turkish label** (e.g., "**Organizör Telefon Numarası:** [Numara]").
+
+### Final Deployment Steps
+* Ensure all necessary frontend code (React components) is updated to handle and display this new data.
+* Re-compile the application: `npm run build`
+* Restart the server: `npm start`

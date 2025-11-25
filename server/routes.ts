@@ -273,19 +273,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/maclar/:macId", (req, res) => {
-    try {
-      const match = getMatchById(req.params.macId);
-      if (!match) {
-        return res.status(404).json({ error: "Maç bulunamadı" });
-      }
-      res.json(match);
-    } catch (error) {
-      console.error("Error fetching match:", error);
-      res.status(500).json({ error: "Maç bilgisi alınamadı" });
-    }
-  });
-
   app.post("/api/maclar", (req, res) => {
     if (!req.session.userId) {
       return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
@@ -415,8 +402,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/maclar/:macId - Get single match details with organizer phone for joined users only
+  app.get("/api/maclar/:macId", async (req, res) => {
+    try {
+      const match = getMatchById(req.params.macId);
+      if (!match) {
+        return res.status(404).json({ error: "Maç bulunamadı" });
+      }
+
+      const userId = req.session.userId;
+      const isAuthenticated = !!userId;
+      const isParticipant = isAuthenticated && match.katilanOyuncular.includes(userId);
+      const isOrganizer = isAuthenticated && match.organizatorId === userId;
+      const isInvolved = isParticipant || isOrganizer;
+
+      // Only show organizer phone to authenticated users who have JOINED (not organizer themselves)
+      let organizatorTelefon: string | null = null;
+      if (isParticipant && !isOrganizer) {
+        const organizer = await storage.getUser(match.organizatorId);
+        if (organizer) {
+          organizatorTelefon = organizer.phone;
+        }
+      }
+
+      // Scrub sensitive fields for unauthenticated or non-involved users
+      if (!isInvolved) {
+        // Return public info only - no participant list or organizer ID
+        res.json({
+          macId: match.macId,
+          sahaAdi: match.sahaAdi,
+          konum: match.konum,
+          tarih: match.tarih,
+          saat: match.saat,
+          oyuncuSayisi: match.oyuncuSayisi,
+          mevcutOyuncuSayisi: match.mevcutOyuncuSayisi,
+          seviye: match.seviye,
+          fiyat: match.fiyat,
+          gerekliMevkiler: match.gerekliMevkiler,
+          organizatorTelefon: null,
+        });
+      } else {
+        // Full info for involved users
+        res.json({
+          ...match,
+          organizatorTelefon,
+        });
+      }
+    } catch (error) {
+      console.error("Get match error:", error);
+      res.status(500).json({ error: "Maç bilgisi alınamadı" });
+    }
+  });
+
   // GET /api/maclarim - Get user's matches (organized and joined)
-  app.get("/api/maclarim", (req, res) => {
+  app.get("/api/maclarim", async (req, res) => {
     if (!req.session.userId) {
       return res.status(401).json({ error: "Oturum açmanız gerekiyor" });
     }
@@ -429,9 +468,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const organizatorOldugum = tumMaclar.filter(mac => mac.organizatorId === userId);
       
       // Matches where user has joined (includes both as participant and organizer)
-      const katildigim = tumMaclar.filter(mac => 
+      const katildigimRaw = tumMaclar.filter(mac => 
         mac.katilanOyuncular.includes(userId) || mac.organizatorId === userId
       );
+
+      // Add organizer phone only to matches where user is a PARTICIPANT (not organizer)
+      const katildigim = await Promise.all(katildigimRaw.map(async (mac) => {
+        const isParticipant = mac.katilanOyuncular.includes(userId);
+        const isOrganizer = mac.organizatorId === userId;
+        
+        // Only show phone if user is a participant but NOT the organizer
+        let organizatorTelefon: string | null = null;
+        if (isParticipant && !isOrganizer) {
+          const organizer = await storage.getUser(mac.organizatorId);
+          organizatorTelefon = organizer?.phone || null;
+        }
+        
+        return {
+          ...mac,
+          organizatorTelefon,
+        };
+      }));
 
       res.json({
         organizatorOldugum,

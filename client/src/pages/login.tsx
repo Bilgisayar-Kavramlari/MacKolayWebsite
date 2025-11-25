@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useAuth } from "@/lib/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function Login() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { setUser } = useAuth();
   const [loginError, setLoginError] = useState<string | null>(null);
 
   const form = useForm<LoginForm>({
@@ -48,6 +50,9 @@ export default function Login() {
       return response.json();
     },
     onSuccess: (data) => {
+      if (data.user) {
+        setUser(data.user);
+      }
       queryClient.invalidateQueries({ queryKey: ['/api/auth/durum'] });
       queryClient.invalidateQueries({ queryKey: ['/api/profil'] });
       toast({

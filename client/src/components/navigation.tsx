@@ -2,8 +2,9 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, LogOut } from "lucide-react";
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useAuth } from "@/lib/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
@@ -13,21 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-interface AuthStatus {
-  authenticated: boolean;
-  userId?: string;
-  username?: string;
-}
-
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-
-  const { data: authStatus } = useQuery<AuthStatus>({
-    queryKey: ['/api/auth/durum'],
-    staleTime: 30000,
-  });
+  const { user, isAuthenticated, clearUser } = useAuth();
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
@@ -35,6 +26,7 @@ export function Navigation() {
       return response.json();
     },
     onSuccess: () => {
+      clearUser();
       queryClient.invalidateQueries({ queryKey: ['/api/auth/durum'] });
       queryClient.invalidateQueries({ queryKey: ['/api/profil'] });
       toast({
@@ -52,7 +44,7 @@ export function Navigation() {
     },
   });
 
-  const isLoggedIn = authStatus?.authenticated === true;
+  const isLoggedIn = isAuthenticated;
 
   const getInitials = (username: string) => {
     return username.slice(0, 2).toUpperCase();
@@ -127,10 +119,10 @@ export function Navigation() {
                 <Button variant="ghost" className="gap-2" data-testid="button-user-menu">
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                      {authStatus?.username ? getInitials(authStatus.username) : "U"}
+                      {user?.username ? getInitials(user.username) : "U"}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="hidden sm:inline">{authStatus?.username}</span>
+                  <span className="hidden sm:inline">{user?.username}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">

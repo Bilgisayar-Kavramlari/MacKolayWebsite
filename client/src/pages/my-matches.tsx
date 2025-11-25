@@ -11,7 +11,8 @@ import {
   Users, 
   Clock,
   Trophy,
-  UserCircle
+  UserCircle,
+  Phone
 } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -29,6 +30,7 @@ interface MacVerisi {
   gerekliMevkiler: string[];
   katilanOyuncular: string[];
   organizatorId: string;
+  organizatorTelefon?: string | null;
 }
 
 interface MaclarimResponse {
@@ -138,6 +140,22 @@ export default function MyMatches() {
                   {positionLabels[pos] || pos}
                 </Badge>
               ))}
+            </div>
+          </div>
+        )}
+
+        {!isOrganizer && mac.organizatorTelefon && (
+          <div className="mt-3 pt-3 border-t">
+            <div className="flex items-center gap-2 text-sm bg-primary/10 p-2 rounded-md">
+              <Phone className="w-4 h-4 text-primary" />
+              <span className="font-medium text-foreground">Organizatör Telefon Numarası:</span>
+              <a 
+                href={`tel:${mac.organizatorTelefon}`} 
+                className="text-primary hover:underline font-semibold"
+                data-testid={`link-organizator-telefon-${mac.macId}`}
+              >
+                {mac.organizatorTelefon}
+              </a>
             </div>
           </div>
         )}
