@@ -10,5 +10,17 @@
     "height": null,
     "weight": null,
     "age": null
+  },
+  {
+    "id": "1edf9fe1-0afd-4a1a-b59a-0a5147b3726c",
+    "username": "5eren2",
+    "password": "$2b$10$eUHu1/SxBSGGd5ieDIphQeFytyUi4lbIduLb4fv/NIlEbDJ737WN6",
+    "fullName": "Eren Şimşek",
+    "phone": "0555123456",
+    "position": "forvet",
+    "profilePicture": null,
+    "height": 190,
+    "weight": 120,
+    "age": 21
   }
 ]
