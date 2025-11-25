@@ -34,5 +34,29 @@
     "height": null,
     "weight": null,
     "age": null
+  },
+  {
+    "id": "f31a9ff6-4d83-4ae1-aa9f-d768d99cfc6f",
+    "username": "enes_sancak",
+    "password": "$2b$10$ro62PEnSuq90j.kqb.4pV.KQ7h0SjG9RtaRZZebgk7X53YlvrYCBa",
+    "fullName": "Enes Sancak",
+    "phone": "0555123456",
+    "position": "orta-saha",
+    "profilePicture": null,
+    "height": 170,
+    "weight": 60,
+    "age": 22
+  },
+  {
+    "id": "9c33e3ee-e093-48e2-b80b-419d5c4b4954",
+    "username": "testuser",
+    "password": "$2b$10$RysMxpGTp4iO1PYTTdBvG./tuq4KzfHd5TwYuDgHc46EDOBW/B9Me",
+    "fullName": "Test User",
+    "phone": "0555 123 45 67",
+    "position": "kaleci",
+    "profilePicture": null,
+    "height": null,
+    "weight": null,
+    "age": null
   }
 ]
