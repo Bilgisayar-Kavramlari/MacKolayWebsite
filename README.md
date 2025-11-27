@@ -47,3 +47,12 @@ To run this project locally, please ensure you have Node.js installed.
     ```bash
     npm start
     ```
+
+    ## 👨‍💻 Developers
+    This is a common project.
+    
+    👤Eren Şimşek
+
+    👤Muhammed Eren Bağ
+
+    👤Abdulkadir Atakan
