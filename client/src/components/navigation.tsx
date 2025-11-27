@@ -60,7 +60,7 @@ export function Navigation() {
             data-testid="link-home"
           >
             <img 
-              src="/mac_kolay_logo.png" 
+              src="/mac_kolay_logo_transparent.png" 
               alt="Maç Kolay Logo" 
               className="h-10 w-auto object-contain"
             />
