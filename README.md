@@ -51,8 +51,8 @@ To run this project locally, please ensure you have Node.js installed.
     ## 👨‍💻 Developers
     This is a common project.
     
-    👤Eren Şimşek
+    👤 Eren Şimşek
 
-    👤Muhammed Eren Bağ
+    👤 Muhammed Eren Bağ
 
-    👤Abdulkadir Atakan
+    👤 Abdulkadir Atakan
