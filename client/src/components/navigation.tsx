@@ -59,10 +59,12 @@ export function Navigation() {
             className="flex items-center gap-2 text-xl font-black text-primary" 
             data-testid="link-home"
           >
-            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground text-sm font-black">HS</span>
-            </div>
-            Halı Saha Maç
+            <img 
+              src="/mac_kolay_logo.png" 
+              alt="Maç Kolay Logo" 
+              className="h-10 w-auto object-contain"
+            />
+            <span className="text-xl font-black tracking-tight">Maç Kolay</span>
           </Link>
         </div>
 

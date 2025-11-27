@@ -1,8 +1,12 @@
-# Halı Saha Maç Uygulaması
+# Maç Kolay
 
 ## Overview
 
-This is a Turkish football (soccer) field booking and match-finding web application called "Halı Saha Maç" (Artificial Turf Match). The platform helps users discover nearby matches, join games, and rent football fields. It's designed with an energetic, community-focused approach inspired by Airbnb's booking experience and Meetup's social features.
+This is a Turkish football (soccer) field booking and match-finding web application called "Maç Kolay" (Easy Match). The platform helps users discover nearby matches, join games, and rent football fields. It's designed with an energetic, community-focused approach inspired by Airbnb's booking experience and Meetup's social features.
+
+**Branding:**
+- Logo: `/mac_kolay_logo.png` (served from client/public/)
+- Site Name: "Maç Kolay" displayed in header navigation
 
 The application is built as a full-stack TypeScript project with a React frontend and Express backend, featuring a modern UI component library (shadcn/ui) and PostgreSQL database integration through Drizzle ORM.
 
