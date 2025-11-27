@@ -1,4 +1,4 @@
-# ⚽ Maç Kolay - Small-Sided Football Match Organizer
+# ⚽ Maç Kolay - Small-Sided Football Match Organizer 
 
 **Developed on Replit.** This is a robust full-stack web application designed to simplify the process of organizing, joining, and managing local "halı saha" (small-sided football) matches in Turkey. The platform focuses on accountability and seamless user experience.
 
