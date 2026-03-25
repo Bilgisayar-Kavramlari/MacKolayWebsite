@@ -3,7 +3,7 @@
 **Developed on Replit.** This is a robust full-stack web application designed to simplify the process of organizing, joining, and managing local "halı saha" (small-sided football) matches in Turkey. The platform focuses on accountability and seamless user experience.
 
 ## 🚀 Live Application
-You can explore the live, fully functional application here:
+You can explore the live, fully functional application here: 
 
 [Visit Maç Kolay Live Site](https://mackolay.replit.app/)
 
